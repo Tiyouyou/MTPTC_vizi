@@ -1,0 +1,52 @@
+<!Dictype html>
+	<html>
+		<head>
+			<title> Enregistrement Vizi </title>
+			<meta charset="utf-8">
+    		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    		<script src="js/jquery-3.3.1.min.js"></script>
+   			<script src="js/bootstrap.min.js"></script>
+    		<!-- Bootstrap CSS -->
+   			<link rel="stylesheet" href="css/bootstrap.min.css">
+  			<link href="css/mdb.min.css" rel="stylesheet">
+    		<link rel="stylesheet" href="css/style.css">
+		</head>
+		<body>
+			<div id="bar" class="col-md-12">
+					<p class="nom">MTPTC</p>
+			</div>
+			<div id="block2" class="container-fluid">
+				
+				<div id="Deconexion" class="col-md-12"><a href="#">Déconnexion</a></div>
+				<div class="row">
+					<div class="col-md-4">
+						<p class="img"><img  src="image/logo_mini.png"></p>
+					</div>
+					<div class="col-md-8">
+						<h1>Enregistrer un Utilisateur </h1>
+						<img class="use" src="image/user.png">
+						<form method="POST" action="traitement.php">
+								<p class="info"><label for="nom">Nom: </label>
+								<input type="texte" name="nom" id="nom" required="required" size="20" />
+								<label for="prenom">Prenom: </label>
+								<input type="texte" name="prenom" id="prenom" required="required" size="20" /></p>
+								<p class="info"><label for="CIN OU NIF"> CIN/NIF: </label>
+								<input type="texte" name="CIN" id="CIN" required="required" size="50" /></p>
+								<p class="info"><label for="Telephone"> Telephone: </label>
+								<input type="texte" name="lTelephone" id="telephone" required="required" size="30" /></b></p>
+								<br/>
+								<p><label for="Utilisateur">Nom Utilisateur: </label>
+								<input type="texte" name="Utilisateur" id="telephone" required="required" size="50" /><br></p>
+								<p><label for="Password"> Mot de Passe	 :  </label>
+								<input type="Password" name="Modepasse" id="Modepasse" required="required" size="50" /></br></p>
+								<P id="btn"><input type="submit" value="Enregistrer" class="btn"  /></P>
+						</form>
+						
+					</div>
+				</div>
+			</div>
+			<footer>
+				<p>MTPTC-VIZI 2019</p>
+			</footer>
+			</body>
+			</html>

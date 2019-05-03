@@ -1,0 +1,19 @@
+body{
+font-family:'open sans', sans-serif;
+width:50%px;
+background-color:whrite;
+background-image:image.jpg;
+}
+h1{
+background-color:b5c9ee;
+font-size:20pt;
+color:070808;
+direction:center;
+
+}
+h2{
+background-color:b5c9ee;
+font-size:16pt;
+color:070808;
+position:right;
+}
