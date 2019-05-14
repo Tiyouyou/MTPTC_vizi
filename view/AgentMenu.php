@@ -6,5 +6,5 @@
 
 	<div class="col-md-3"><p class="button" id="b3"><a href="index.php?rapport"><img src="view/image/rap1.png" width="30%"><br/>RAPPORT</p></div>
 
-	<div class="col-md-3"><p class="button" id="b4"><a href="index.php?recherche"><img src="view/image/re1.png" width="30%"><br/>RECHERCHER VISITEUR</p></div>
+	<div class="col-md-3"><p class="button" id="b4">.<a href="index.php?recherche"><img src="view/image/re1.png" width="30%"><br/>RECHERCHER VISITEUR</p></div>
 </div>
