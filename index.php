@@ -21,13 +21,14 @@
 		$controler= new ControlerUser;
 		if(!isset($_SESSION["UserName"]) AND !isset($_SESSION["Password"]))
 		{
-			
+
 			$controler->connectionControler();
 		}
 		else
 		{
 			require("view/UserView.php");
 		}
+		//mysql_close($con);
 	?>
 
 </body>

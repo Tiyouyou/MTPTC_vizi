@@ -11,6 +11,10 @@ h1
 {
 	color:#878dd9;
 }
+em{
+	color: red;
+	text-align: center;
+}
 .logo
 {
 	text-align: center;
@@ -31,7 +35,7 @@ h1
 {
 	margin-top: 100px;
 	margin-left: 16%;
-	
+
 }
 #content p
 {
@@ -46,21 +50,21 @@ h1
 	color: #2842a8;
 	transition-duration: 1s;
 }
-#b1 
+#b1
 {
-	
+
 }
 #b2
 {
-	
+
 }
 #b3
 {
-	
+
 }
 #b4
 {
-	
+
 }
 #content .col-md-5
 {
@@ -102,7 +106,7 @@ hr
 #bar
 {
 	background-color: white;
-	
+
 	box-shadow:0px 2px 15px black;
 	text-align: right;
 	color:#343ebf;
@@ -110,12 +114,12 @@ hr
 	background-image: url(../image/back.png);
 	background-repeat: no-repeat;
 	background-size: contain;
-	
+
 }
 #bar2
 {
 	background-color: white;
-	
+
 	box-shadow:0px 2px 15px black;
 	text-align: right;
 	font-size: 0.9em;
@@ -124,9 +128,9 @@ hr
 	background-image: url(../image/back.png);
 	background-repeat: no-repeat;
 	background-size: contain;
-	
+
 }
-#bar p 
+#bar p
 {
 	text-align: right;
 	font-size: 0.5em;
@@ -176,7 +180,7 @@ hr
 /*Deconexion-----------------------------------------------------------------------------------------------------------*/
 #Deconexion
 {
-	text-align: right;
+	text-align: left;
 }
 #block2
 {
@@ -197,7 +201,7 @@ hr
 .col-md-8 input
 {
 	border: 1px solid #878dd9;
-	box-shadow: 0px 2px 2px  #878dd9; 
+	box-shadow: 0px 2px 2px  #878dd9;
 	text-align: justify;
 }
 .col-md-8 p
@@ -220,6 +224,28 @@ hr
 	margin-left: 10px;
 	margin-top: 10px;
 }
+/*table-----------------------------------------------------------*/
+table
+{
+		text-align: center;
+}
+thead
+{
+	background-color:#8b0e0e;
+	color:white;
+	font-family:fantasy;
+}
+tbody
+{
+	color:#212564;
+	font-family:fantasy;
+	background-color: #dcc99d;
+}
+tbody input:hover
+{
+	color: #212564;
+}
+/*footer-----------------------------------------------------------*/
 footer
 {
 	background-color: #0a0d23;

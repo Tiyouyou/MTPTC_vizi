@@ -2,12 +2,19 @@
 <div class="col-md-12">
 	<h2>ENREGISTRER Utilisateur</h2>
 		<form method="post" action="#">
-			<p><input type="text" minlength="13" maxlength="22" size="50" placeholder="CIN/NIF"></p>
-			<p><input type="text" maxlength="10" size="50" placeholder="Nom"></p>
-			<p><input type="text" size="50" maxlength="10" placeholder="Prenom"></p>
-			<p><input type="tel" maxlength="15" sixe="30" placeholder="Telephone"></p>
-			<p><input type="text" maxlength="20" size="50" placeholder="Nom Utilisateur"></p>
-      <p><input type="password" maxlength="20" size="50" placeholder="Password"></p>
+			<p><input type="text" name="id" minlength="10" maxlength="22"size="50" placeholder="CIN/NIF"></p>
+			<p><input type="text" name="nom" maxlength="10" size="50" placeholder="Nom"></p>
+			<p><input type="text" name ="prenom" size="50" maxlength="10" placeholder="Prenom"></p>
+			<p><input type="tel" name="telephone" maxlength="15" sixe="30" placeholder="Telephone"></p>
+			<p><input type="text"name="pseudo" maxlength="20" size="50" placeholder="Nom Utilisateur"></p>
+      <p><input type="password" name="password" maxlength="20" size="50" placeholder="Password"></p>
+			<P>
+				<select name="Statut">
+					<option value="1">ADMIN</option>
+					<option value="0">AGENT</option>
+					<option value="2">DIRECTEUR</option>
+				</select>
+			</p>
 			<p><input type="submit" value="ENREGISTRER" class="btn"></p>
 		</form>
 </div>
