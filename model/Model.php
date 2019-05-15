@@ -84,7 +84,7 @@ function RecordVisitor($id_visiteur,$nom,$prenom,$telephone,$personne,$Departeme
 							<td>'.$visiteur["Prenom"].'</td>
 							<td>'.$visiteur["Departement"].'</td>
 							<td>'.$visiteur["Personne_a_contacter"].'</td>
-							<td><form method="post" action="">
+							<td><form method="post" action="controler/Verification.php">
 									<SELECT type="hidden" name="val" style="display: none;"><option  value="'.$visiteur["Id_visiteur"].'"</SELECT>
 									<input type="submit" name="sorti" value="Sortie">
 									</form></td>
@@ -96,12 +96,7 @@ function RecordVisitor($id_visiteur,$nom,$prenom,$telephone,$personne,$Departeme
 
 		}
 		echo 	"	</table>";
-		if(isset($_POST["val"]) AND isset($_POST["sorti"]))
-		{
 
-			$id=htmlspecialchars($_POST["val"]);
-			$sql2=$connect->query("UPDATE `visite` SET `sorti`=1 WHERE `Id_visiteur`='$id' AND `sorti`=0");
-		}
 	}
 
 	function SearchVisitor()

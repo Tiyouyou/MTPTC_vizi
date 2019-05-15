@@ -1,20 +1,10 @@
 <?php
-  function VAcount($user,$password)
-  {
-    if(isset($user) and isset($password))
-    {
-      require("model/Connectiondb.php");
-      $con=$connect();
-      $sql=$con->query("SELECT `Nom_utilisateur`, `Password`FROM `utlisateur` WHERE `Nom_utilisateur`='$user' AND `Password`='$password'");
-
-      while($User=$sql->fetch())
-      {
-
-        if(!isset($User["Nom_utilisateur"]))
-        {
-          echo "Identifiant Incorrecte";
-        }
-      }
-    }
-  }
+if(isset($_POST["val"]) AND isset($_POST["sorti"]))
+{
+  require("../model/Connectiondb.php");
+  $connect=Connection();
+  $id=htmlspecialchars($_POST["val"]);
+  $sql2=$connect->query("UPDATE `visite` SET `sorti`=1 WHERE `Id_visiteur`='$id' AND `sorti`=0");
+  header("location:../index.php?verification");
+}
 ?>

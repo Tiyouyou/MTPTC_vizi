@@ -50,21 +50,14 @@ em{
 	color: #2842a8;
 	transition-duration: 1s;
 }
-#b1
+#card
 {
-
-}
-#b2
-{
-
-}
-#b3
-{
-
-}
-#b4
-{
-
+	width: 350px;
+	background-color: white;
+	color:black;
+	margin: auto;
+	border: 2px solid red;
+	text-align: center;
 }
 #content .col-md-5
 {
