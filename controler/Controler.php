@@ -78,18 +78,18 @@
 			{
 				if($_SESSION["Statut"]==0)
 				{
-
-					require("view/RecordVisitorView.php");
-					if(isset($_POST["cin"]) AND isset($_POST["nom"]) AND isset($_POST["prenom"]) AND isset($_POST["telephone"]) AND isset($_POST["personne"]) AND isset($_POST["Departement"]))
-					{
-						$CIN=$_POST["cin"];
-						$nom=$_POST["nom"];
-						$prenom=$_POST["prenom"];
-						$telephone=$_POST["telephone"];
-						$personne=$_POST["personne"];
-						$Departement=$_POST["Departement"];
-				  	$user->RecordVisitor($CIN,$nom,$prenom,$telephone,$personne,$Departement);
-					}
+						require("view/RecordVisitorView.php");
+						if(isset($_POST["cin"]) AND isset($_POST["nom"]) AND isset($_POST["prenom"]) AND isset($_POST["telephone"]) AND isset($_POST["personne"]) AND isset($_POST["Departement"]))
+						{
+							$CIN=htmlspecialchars($_POST["cin"]);
+							$nom=htmlspecialchars($_POST["nom"]);
+							$prenom=htmlspecialchars($_POST["prenom"]);
+							$telephone=htmlspecialchars($_POST["telephone"]);
+							$personne=htmlspecialchars($_POST["personne"]);
+							$Departement=htmlspecialchars($_POST["Departement"]);
+					  	$user->RecordVisitor($CIN,$nom,$prenom,$telephone,$personne,$Departement);
+							require("view/printcardsView.php");
+						}
 
 					}
 				}

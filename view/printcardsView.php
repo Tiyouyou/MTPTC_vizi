@@ -1,20 +1,40 @@
-<html>
-<head>
-	<title>MTPTCvizi</title>
-	<meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <script src="js/jquery-3.3.1.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="css/bootstrap.min.css">
-    <link href="css/mdb.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css">
-</head>
-<body>
-    <div id="card">
-      <p>test print</p>
-      <P>Nom:pierre<br/>Prenom:Michel<br/>CIN/NIF<br/></p>
-    </div>
-    <a href="javascript:window.print()" class="btn">imprimer</a>
-</body>
-</html>
+<!--<div id="card">
+<?php/*
+  echo"CIN/NIF: ".$CIN."<br/>";
+  echo"Nom: ".$nom."<br/>";
+  echo"Prenom: ".$prenom."<br/>";
+  echo"Personne à Visité: ".$personne."<br/>";
+  echo"Département: ".$Departement."<br/>";
+  */?>
+  <a href="javascript:window.print()"><img src="../image/print.png"></a>
+</div>-->
+
+
+<script language="javascript" type="text/javascript">
+    function printdiv(divID)
+    {
+      var headstr = "<html><head><title></title></head><body>";
+      var footstr = "</body>";
+      var newstr = document.all.item(divID).innerHTML;
+      var oldstr = document.body.innerHTML;
+      document.body.innerHTML = headstr+newstr+footstr;
+      window.print();
+      document.body.innerHTML = oldstr;
+      return false;
+    }
+</script>
+
+
+
+
+
+Code HTML:
+
+<input name="b_print" type="button" onclick="printdiv('divID');" value=" Print " />
+<div id="divID">
+<h1 style="color:green">
+  <img src="image/logo_mini.png">
+</div>
+
+
+</div>
