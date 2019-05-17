@@ -37,17 +37,43 @@
 			}
 		}
 		//enregistrement visiteur......................................................................................................
-function RecordVisitor($id_visiteur,$nom,$prenom,$telephone,$personne,$Departement)
+function RecordVisitor($id_visiteur,$nom,$prenom,$telephone,$personne,$Departement,$objet)
 {
 		require("model/Connectiondb.php");
 		$connect=Connection();
-		if(isset($id_visiteur) and isset($nom) and isset($prenom) and isset($telephone) and isset($personne) and isset($Departement))
+		$vmodel= new UserModel;
+		$rep=$vmodel->chekVizitor($id_visiteur,$connect);
+		if(isset($id_visiteur) and isset($nom) and isset($prenom) and isset($telephone) and isset($personne) and isset($Departement) and isset($objet))
 		{
-			$iduser=$_SESSION["Id_utilisateur"];
-			$con=$connect->query("INSERT INTO `visiteur`(`Id_visiteur`, `Nom`, `Prenom`, `Tel`) VALUES ('$id_visiteur','$nom','$prenom','$telephone')");
-			$con2=$connect->query("INSERT INTO `visite`(`Id_visiteur`, `Id_User`, `Departement`, `Personne_a_contacter`) VALUES ('$id_visiteur','$iduser','$Departement','$personne')");
-			echo '<script> alert ("Visiteur Enregistrer!")</script>';
+			if($id_visiteur!=NULL and $nom!=NULL and $prenom!=NULL and $telephone!=NULL and $personne!=NULL and $Departement!=NULL and $objet!=NULL)
+			{
+				if( preg_match ( " #^[0-9]{3}[-/ ]?[0-9]{3}[-/ ]?[0-9]{3}[-/ ]?[0-9]{1}[-/ ]?$# " , $id_visiteur ) and strlen("$id_visiteur")>=10)
+				{
+					if (preg_match ( " #^[0-9]{3}[-/ ]?[0-9]{2}[-/ ]?[0-9]{2}[-/ ]?[0-9]{2}[-/ ]?[0-9]{2}?$# " , $telephone ) and strlen("$telephone")>=11){
+						if(preg_match('#^[a-zA-Z;/]+$#',$nom) and preg_match('#^[a-zA-Z;/]+$#',$prenom) and preg_match('#^[a-zA-Z;/]+$#',$personne)){
+							if($rep==1)
+							{
+								echo '<script>alert("Erreur:code CIN/NIF Existant,le Visiteur à déjà été Enregistré");</script>';
 
+							}
+							else {
+								date_default_timezone_set('America/Los_Angeles');
+								$heure = date("H:i");
+								$iduser=$_SESSION["Id_utilisateur"];
+								$con=$connect->query("INSERT INTO `visiteur`(`Id_visiteur`, `Nom`, `Prenom`, `Tel`) VALUES ('$id_visiteur','$nom','$prenom','$telephone')");
+								$con2=$connect->query("INSERT INTO `visite`(`Id_visiteur`, `Id_User`, `Departement`, `Personne_a_contacter`,`h_entrer`,`objet_visite`) VALUES ('$id_visiteur','$iduser','$Departement','$personne','$heure ','$objet')");
+								echo '<script> alert ("Visiteur Enregistrer!")</script>';
+							}
+					}
+					else{
+						echo '<script> alert ("Erreur:les champs Nom,Prenom et personne a visite ne doivent pas avoir de caractere speciaux ni de chiffres.")</script>';
+					}
+					}else{echo '<script> alert ("Erreur:Le numero de telephone est invalide,format:50932236233 OU 509-32-23-62-33")</script>';}
+				}else{echo '<script> alert ("Erreur:CIN/NIF  invalide,format:1002369874 OU 002-569-638-9")</script>';}
+			}
+			else{
+				echo '<script> alert ("Erreur:Champ vide, Veuillez Remplir tout les champs du formulaire")</script>';
+			}
 		}
 	}
 	//verifier visiteur
@@ -63,6 +89,8 @@ function RecordVisitor($id_visiteur,$nom,$prenom,$telephone,$personne,$Departeme
 					<th scope="col">Prénom</th>
 					<th scope="col">Département</th>
 					<th scope="col">Personne visitée</th>
+					<th scope="col">Date De Visite</th>
+					<th scope="col">H_ENTRÉE</th>
 					<th scope="col"></th>
 				</tr>
 			</thead>
@@ -71,7 +99,7 @@ function RecordVisitor($id_visiteur,$nom,$prenom,$telephone,$personne,$Departeme
 		//$vizi;
 		require("model/Connectiondb.php");
 		$connect=Connection();
-		$sql=$connect->query("SELECT V.Id_visiteur, V.Nom, V.Prenom, t.Id_visiteur, t.Departement, t.Personne_a_contacter, t.sorti FROM visiteur V, visite t WHERE V.Id_visiteur=t.Id_visiteur AND t.sorti=0 ");
+		$sql=$connect->query("SELECT V.Id_visiteur, V.Nom, V.Prenom, t.Id_visiteur, t.Departement, t.Personne_a_contacter, t.sorti,t.h_entrer,t.Date_d_entree FROM visiteur V, visite t WHERE V.Id_visiteur=t.Id_visiteur AND t.sorti=0 ");
 		while($visiteur=$sql->fetch())
 		{
 			$vizi=$visiteur["Id_visiteur"];
@@ -84,6 +112,8 @@ function RecordVisitor($id_visiteur,$nom,$prenom,$telephone,$personne,$Departeme
 							<td>'.$visiteur["Prenom"].'</td>
 							<td>'.$visiteur["Departement"].'</td>
 							<td>'.$visiteur["Personne_a_contacter"].'</td>
+							<td>'.$visiteur["Date_d_entree"].'</td>
+							<td>'.$visiteur["h_entrer"].'</td>
 							<td><form method="post" action="controler/Verification.php">
 									<SELECT type="hidden" name="val" style="display: none;"><option  value="'.$visiteur["Id_visiteur"].'"</SELECT>
 									<input type="submit" name="sorti" value="Sortie">
@@ -108,7 +138,7 @@ function RecordVisitor($id_visiteur,$nom,$prenom,$telephone,$personne,$Departeme
 			//$vizi;
 			require("model/Connectiondb.php");
 			$connect=Connection();
-			$sql=$connect->query("SELECT V.Id_visiteur, V.Nom, V.Prenom, t.Id_visiteur, t.Departement, t.Personne_a_contacter, t.sorti FROM visiteur V, visite t WHERE V.Id_visiteur=t.Id_visiteur AND V.Id_visiteur='$cin' ");
+			$sql=$connect->query("SELECT V.Id_visiteur, V.Nom, V.Prenom, t.Id_visiteur, t.Departement, t.Personne_a_contacter, t.sorti,t.h_entrer,t.h_sortie,t.Date_d_entree FROM visiteur V, visite t WHERE V.Id_visiteur=t.Id_visiteur AND V.Id_visiteur='$cin' ");
 			while($visiteur=$sql->fetch())
 			{
 				$vizi=$visiteur["Id_visiteur"];
@@ -123,6 +153,9 @@ function RecordVisitor($id_visiteur,$nom,$prenom,$telephone,$personne,$Departeme
 								<th scope="col">Prénom</th>
 								<th scope="col">Département</th>
 								<th scope="col">Personne visitée</th>
+								<th scope="col">Date De Visite</th>
+								<th scope="col">H_ENTRÉE</th>
+								<th scope="col">H_SORTIE</th>
 							</tr>
 						</thead>
 
@@ -136,6 +169,9 @@ function RecordVisitor($id_visiteur,$nom,$prenom,$telephone,$personne,$Departeme
 									<td>'.$visiteur["Prenom"].'</td>
 									<td>'.$visiteur["Departement"].'</td>
 									<td>'.$visiteur["Personne_a_contacter"].'</td>
+									<td>'.$visiteur["Date_d_entree"].'</td>
+									<td>'.$visiteur["h_entrer"].'</td>
+									<td>'.$visiteur["h_sortie"].'</td>
 								</tr>
 							</tbody>
 
@@ -152,4 +188,24 @@ function RecordVisitor($id_visiteur,$nom,$prenom,$telephone,$personne,$Departeme
 		}
 	}
 
+	function chekVizitor($id,$con)
+	{
+		$connect=$con;
+		$l=$connect->query("SELECT Id_visiteur FROM `visiteur` WHERE Id_visiteur='$id'");
+		while ($user=$l->fetch()) {
+			if(isset($user["Id_visiteur"]))
+			{
+				return 1;
+			}
+		}
+	}
+/*	function chekRapport($jour,$Mois,$Annee)
+	{
+		require("model/Connectiondb.php");
+		$connect=Connection();
+		$l=$connect->query("SELECT d.Id_visiteur,R.Nom.R.prenom,R.adresse,R.telephone,d.Date_d_entre,d.h_entrer,d.h_sortie,d.Personne_a_contacter,d.objet_visite  FROM `Visite d`visiteur R WHERE jour='$jour'")
+			while ($user=$1->fetch()) {
+			if(isset(users["jour"]))
+			}
+	}*/
 }

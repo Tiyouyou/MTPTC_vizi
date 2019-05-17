@@ -2,10 +2,10 @@
 <div class="col-md-12">
 	<h2>ENREGISTRER VISITEUR</h2>
 		<form method="post" action="#">
-			<p><input type="text" name="cin"  maxlength="22" size="50" placeholder="CIN/NIF"></p>
+			<p><input type="text" name="cin" minlength="10"  maxlength="22" size="50" placeholder="CIN/NIF"></p>
 			<p><input type="text" name="nom" maxlength="10" size="50" placeholder="Nom"></p>
 			<p><input type="text" name="prenom"size="50" maxlength="10" placeholder="Prenom"></p>
-			<p><input type="tel" name="telephone" maxlength="15" sixe="30" placeholder="Telephone"></p>
+			<p><input type="tel" name="telephone" minlength="11" maxlength="15" sixe="30" placeholder="Telephone"></p>
 			<p><input type="text" name="personne" maxlength="10" size="50" placeholder="Personne à visiter"></p>
 			<p><select name="Departement">
 				<option value="CC">Comptabilité centrale (CC)</option>
@@ -25,6 +25,7 @@
 				<option value="UTSI">Unité Technique de Statistiques et d’informatique (UTSI)</option>
 				<option></option>
 			</select></p>
+			<p><input type="text" name="objet" maxlength="100" size="50" placeholder="Objet visite"></p>
 			<p><input type="submit" value="ENREGISTRER" class="btn"></p>
 
 		</form>
