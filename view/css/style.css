@@ -217,6 +217,11 @@ hr
 	margin-left: 10px;
 	margin-top: 10px;
 }
+/*carte impression forme------------------------------------------*/
+#impresion
+{
+	border: 2px solid black;
+}
 /*table-----------------------------------------------------------*/
 table
 {

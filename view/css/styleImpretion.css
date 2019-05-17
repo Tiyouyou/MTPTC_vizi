@@ -1,0 +1,24 @@
+body
+{
+background-color:white;
+}
+p
+{
+  font-size: 0.8em;
+}
+#html-content-holder
+{
+  background: url(../image/logo_back.png);
+  background-repeat: no-repeat;
+  background-position: center;
+  margin: auto;
+}
+h5
+{
+  padding: 5px;
+  text-align: center;
+}
+#previewImage
+{
+  margin: auto;
+}

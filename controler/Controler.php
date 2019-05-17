@@ -82,6 +82,7 @@
 						require("view/RecordVisitorView.php");
 						if(isset($_POST["cin"]) AND isset($_POST["nom"]) AND isset($_POST["prenom"]) AND isset($_POST["telephone"]) AND isset($_POST["personne"]) AND isset($_POST["Departement"]) AND isset($_POST["objet"]))
 						{
+
 								$CIN=htmlspecialchars($_POST["cin"]);
 								$nom=htmlspecialchars($_POST["nom"]);
 								$prenom=htmlspecialchars($_POST["prenom"]);
@@ -90,7 +91,7 @@
 								$Departement=htmlspecialchars($_POST["Departement"]);
 								$objet=htmlspecialchars($_POST["objet"]);
 						  	$user->RecordVisitor($CIN,$nom,$prenom,$telephone,$personne,$Departement,$objet);
-								require("view/printcardsView.php");
+								
 						}
 
 					}

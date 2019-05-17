@@ -1,5 +1,5 @@
-<div class="row">
-<div class="col-md-12">
+<div class="row" >
+<div class="col-md-12" id="rvisitor">
 	<h2>ENREGISTRER VISITEUR</h2>
 		<form method="post" action="#">
 			<p><input type="text" name="cin" minlength="10"  maxlength="22" size="50" placeholder="CIN/NIF"></p>

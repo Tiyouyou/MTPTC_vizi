@@ -39,6 +39,7 @@
 		//enregistrement visiteur......................................................................................................
 function RecordVisitor($id_visiteur,$nom,$prenom,$telephone,$personne,$Departement,$objet)
 {
+		$ok=0;
 		require("model/Connectiondb.php");
 		$connect=Connection();
 		$vmodel= new UserModel;
@@ -63,6 +64,7 @@ function RecordVisitor($id_visiteur,$nom,$prenom,$telephone,$personne,$Departeme
 								$con=$connect->query("INSERT INTO `visiteur`(`Id_visiteur`, `Nom`, `Prenom`, `Tel`) VALUES ('$id_visiteur','$nom','$prenom','$telephone')");
 								$con2=$connect->query("INSERT INTO `visite`(`Id_visiteur`, `Id_User`, `Departement`, `Personne_a_contacter`,`h_entrer`,`objet_visite`) VALUES ('$id_visiteur','$iduser','$Departement','$personne','$heure ','$objet')");
 								echo '<script> alert ("Visiteur Enregistrer!")</script>';
+								$ok=1;
 							}
 					}
 					else{
@@ -74,6 +76,9 @@ function RecordVisitor($id_visiteur,$nom,$prenom,$telephone,$personne,$Departeme
 			else{
 				echo '<script> alert ("Erreur:Champ vide, Veuillez Remplir tout les champs du formulaire")</script>';
 			}
+		}
+		if($ok==1){
+			header("location:view/printcardsView.php");
 		}
 	}
 	//verifier visiteur
