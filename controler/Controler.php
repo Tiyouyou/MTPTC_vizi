@@ -91,13 +91,14 @@
 								$Departement=htmlspecialchars($_POST["Departement"]);
 								$objet=htmlspecialchars($_POST["objet"]);
 						  	$user->RecordVisitor($CIN,$nom,$prenom,$telephone,$personne,$Departement,$objet);
-								
+
 						}
 
 					}
 				}
 
 			}
+			//rechercher visiteur----------------------------------------------------------------------------------------------
 			function conseachVisitor()
 			{
 				require("view/RechercheView.php");
@@ -107,8 +108,21 @@
 				{
 					$user->SearchVisitor();
 				}
-
-
 			}
+			//-------------------------------------------------------------------------------------------------------------
+			//rapport--------------------------------------------------------------
+			function conchekRapport()
+			{
+				require("view/RapportView.html");
+				require("model/Model.php");
+				$user= new UserModel;
+				if(isset($_POST["Jour"]) AND isset($_POST["Mois"]) AND isset($_POST["Annee"]))
+				{
 
+					$jour=htmlspecialchars($_POST["Jour"]);
+					$mois=htmlspecialchars($_POST["Mois"]);
+					$annee=htmlspecialchars($_POST["Annee"]);
+					$user->chekRapport($jour,$mois,$annee);
+				}
+			}
 		}

@@ -64,7 +64,7 @@ function RecordVisitor($id_visiteur,$nom,$prenom,$telephone,$personne,$Departeme
 								$con=$connect->query("INSERT INTO `visiteur`(`Id_visiteur`, `Nom`, `Prenom`, `Tel`) VALUES ('$id_visiteur','$nom','$prenom','$telephone')");
 								$con2=$connect->query("INSERT INTO `visite`(`Id_visiteur`, `Id_User`, `Departement`, `Personne_a_contacter`,`h_entrer`,`objet_visite`) VALUES ('$id_visiteur','$iduser','$Departement','$personne','$heure ','$objet')");
 								echo '<script> alert ("Visiteur Enregistrer!")</script>';
-								$ok=1;
+								header("location:view/printcardsView.php?$id_visiteur & $nom & $prenom & $telephone");
 							}
 					}
 					else{
@@ -77,11 +77,9 @@ function RecordVisitor($id_visiteur,$nom,$prenom,$telephone,$personne,$Departeme
 				echo '<script> alert ("Erreur:Champ vide, Veuillez Remplir tout les champs du formulaire")</script>';
 			}
 		}
-		if($ok==1){
-			header("location:view/printcardsView.php");
-		}
 	}
-	//verifier visiteur
+	//--------------------------------------------------------------------------------------------------------------------------------------
+	//verifier visiteur----------------------------------------------------------------------------------------------------------------------
 	function VerifVisitor()
 	{
 
@@ -139,7 +137,22 @@ function RecordVisitor($id_visiteur,$nom,$prenom,$telephone,$personne,$Departeme
 		if(isset($_POST["cin"]))
 		{
 			$cin=htmlspecialchars($_POST["cin"]);
+			echo'
+			<table class="table">
+				<thead>
+					<tr>
+						<th scope="col">CIN/NIF</th>
+						<th scope="col">Nom</th>
+						<th scope="col">Prénom</th>
+						<th scope="col">Département</th>
+						<th scope="col">Personne visitée</th>
+						<th scope="col">Date De Visite</th>
+						<th scope="col">H_ENTRÉE</th>
+						<th scope="col">H_SORTIE</th>
+					</tr>
+				</thead>
 
+			';
 			//$vizi;
 			require("model/Connectiondb.php");
 			$connect=Connection();
@@ -149,22 +162,7 @@ function RecordVisitor($id_visiteur,$nom,$prenom,$telephone,$personne,$Departeme
 				$vizi=$visiteur["Id_visiteur"];
 				if(isset($visiteur["Id_visiteur"]))
 				{
-					echo'
-					<table class="table">
-						<thead>
-							<tr>
-								<th scope="col">CIN/NIF</th>
-								<th scope="col">Nom</th>
-								<th scope="col">Prénom</th>
-								<th scope="col">Département</th>
-								<th scope="col">Personne visitée</th>
-								<th scope="col">Date De Visite</th>
-								<th scope="col">H_ENTRÉE</th>
-								<th scope="col">H_SORTIE</th>
-							</tr>
-						</thead>
 
-					';
 
 					echo'
 							<tbody>
@@ -204,13 +202,217 @@ function RecordVisitor($id_visiteur,$nom,$prenom,$telephone,$personne,$Departeme
 			}
 		}
 	}
-/*	function chekRapport($jour,$Mois,$Annee)
+function chekRapport($jour,$Mois,$Annee)
 	{
 		require("model/Connectiondb.php");
 		$connect=Connection();
-		$l=$connect->query("SELECT d.Id_visiteur,R.Nom.R.prenom,R.adresse,R.telephone,d.Date_d_entre,d.h_entrer,d.h_sortie,d.Personne_a_contacter,d.objet_visite  FROM `Visite d`visiteur R WHERE jour='$jour'")
-			while ($user=$1->fetch()) {
-			if(isset(users["jour"]))
+		if(isset($Annee) OR isset($Mois) OR isset($jour))
+		{
+			echo'
+			<table class="table">
+				<thead>
+					<tr>
+						<th scope="col">CIN/NIF</th>
+						<th scope="col">Nom</th>
+						<th scope="col">Prénom</th>
+						<th scope="col">Département</th>
+						<th scope="col">Personne visitée</th>
+						<th scope="col">Date De Visite</th>
+						<th scope="col">H_ENTRÉE</th>
+						<th scope="col">H_SORTIE</th>
+						<th scope="col">OBJET DE LA VISITE</th>
+					</tr>
+				</thead>
+
+			';
+
+			if($Annee!="none" AND $Mois=="none" AND $jour=="none")
+			{
+				echo $Annee ."<br/>";
+				$l=$connect->query("SELECT R.Id_visiteur,R.Nom,R.Prenom,R.Tel,d.Id_visiteur,d.Date_d_entree,d.h_entrer,d.h_sortie,d.Departement,d.Personne_a_contacter,d.objet_visite  FROM Visite d ,visiteur R WHERE R.Id_visiteur=d.Id_visiteur AND YEAR(Date_d_entree)='$Annee'");
+					while ($visiteur=$l->fetch()) {
+						if(isset($visiteur["Id_visiteur"]))
+						{
+							echo'
+									<tbody>
+										<tr>
+											<th scope="row">'.$visiteur["Id_visiteur"].'</th>
+											<td>'.$visiteur["Nom"].'</td>
+											<td>'.$visiteur["Prenom"].'</td>
+											<td>'.$visiteur["Departement"].'</td>
+											<td>'.$visiteur["Personne_a_contacter"].'</td>
+											<td>'.$visiteur["Date_d_entree"].'</td>
+											<td>'.$visiteur["h_entrer"].'</td>
+											<td>'.$visiteur["h_sortie"].'</td>
+											<td>'.$visiteur["objet_visite"].'</td>
+										</tr>
+									</tbody>';
+						}
+					}
+
 			}
-	}*/
+			if($Annee!="none" AND $Mois!="none" AND $jour=="none")
+			{
+
+				$l=$connect->query("SELECT R.Id_visiteur,R.Nom,R.Prenom,R.Tel,d.Id_visiteur,d.Date_d_entree,d.h_entrer,d.h_sortie,d.Departement,d.Personne_a_contacter,d.objet_visite  FROM Visite d ,visiteur R WHERE R.Id_visiteur=d.Id_visiteur AND YEAR(Date_d_entree)='$Annee' AND MONTH(Date_d_entree)='$Mois'");
+					while ($visiteur=$l->fetch()) {
+						if(isset($visiteur["Id_visiteur"]))
+						{
+							echo'
+									<tbody>
+										<tr>
+											<th scope="row">'.$visiteur["Id_visiteur"].'</th>
+											<td>'.$visiteur["Nom"].'</td>
+											<td>'.$visiteur["Prenom"].'</td>
+											<td>'.$visiteur["Departement"].'</td>
+											<td>'.$visiteur["Personne_a_contacter"].'</td>
+											<td>'.$visiteur["Date_d_entree"].'</td>
+											<td>'.$visiteur["h_entrer"].'</td>
+											<td>'.$visiteur["h_sortie"].'</td>
+											<td>'.$visiteur["objet_visite"].'</td>
+										</tr>
+									</tbody>';
+						}
+					}
+
+			}
+			if($Annee!="none" AND $Mois!="none" AND $jour!="none")
+			{
+				echo $Annee ."<br/>";
+				$l=$connect->query("SELECT R.Id_visiteur,R.Nom,R.Prenom,R.Tel,d.Id_visiteur,d.Date_d_entree,d.h_entrer,d.h_sortie,d.Departement,d.Personne_a_contacter,d.objet_visite  FROM Visite d ,visiteur R WHERE R.Id_visiteur=d.Id_visiteur AND YEAR(Date_d_entree)='$Annee' AND MONTH(Date_d_entree)='$Mois' AND DAY(Date_d_entree)='$jour'");
+					while ($visiteur=$l->fetch()) {
+						if(isset($visiteur["Id_visiteur"]))
+						{
+							echo'
+									<tbody>
+										<tr>
+											<th scope="row">'.$visiteur["Id_visiteur"].'</th>
+											<td>'.$visiteur["Nom"].'</td>
+											<td>'.$visiteur["Prenom"].'</td>
+											<td>'.$visiteur["Departement"].'</td>
+											<td>'.$visiteur["Personne_a_contacter"].'</td>
+											<td>'.$visiteur["Date_d_entree"].'</td>
+											<td>'.$visiteur["h_entrer"].'</td>
+											<td>'.$visiteur["h_sortie"].'</td>
+											<td>'.$visiteur["objet_visite"].'</td>
+											<td>'.$visiteur["Id_User].'</td>
+										</tr>
+									</tbody>';
+						}
+					}
+
+			}
+			echo 	"	</table>";
+		}
+
+	}
+function adminRapport ($jour,$Mois,$Annee)
+{
+	require("model/Connectiondb.php");
+	$connect=Connection();
+	if(isset($Annee) OR isset($Mois) OR isset($jour))
+	{
+		echo'
+		<table class="table">
+			<thead>
+				<tr>
+					<th scope="col">CIN/NIF</th>
+					<th scope="col">Nom</th>
+					<th scope="col">Prénom</th>
+					<th scope="col">Département</th>
+					<th scope="col">Personne visitée</th>
+					<th scope="col">Date De Visite</th>
+					<th scope="col">H_ENTRÉE</th>
+					<th scope="col">H_SORTIE</th>
+					<th scope="col">OBJET DE LA VISITE</th>
+					<th scope="col">ID Agent</th>
+				</tr>
+			</thead>
+
+		';
+
+		if($Annee!="none" AND $Mois=="none" AND $jour=="none")
+		{
+			echo $Annee ."<br/>";
+			$l=$connect->query("SELECT U.id_utilisateur,d.Id_User,R.Id_visiteur,R.Nom,R.Prenom,R.Tel,d.Id_visiteur,d.Date_d_entree,d.h_entrer,d.h_sortie,d.Departement,d.Personne_a_contacter,d.objet_visite  FROM Visite d ,visiteur R,utlisateur U WHERE R.Id_visiteur=d.Id_visiteur AND U.id_utilisateur=d.Id_User AND YEAR(Date_d_entree)='$Annee'");
+				while ($visiteur=$l->fetch()) {
+					if(isset($visiteur["Id_visiteur"]))
+					{
+						echo'
+								<tbody>
+									<tr>
+										<th scope="row">'.$visiteur["Id_visiteur"].'</th>
+										<td>'.$visiteur["Nom"].'</td>
+										<td>'.$visiteur["Prenom"].'</td>
+										<td>'.$visiteur["Departement"].'</td>
+										<td>'.$visiteur["Personne_a_contacter"].'</td>
+										<td>'.$visiteur["Date_d_entree"].'</td>
+										<td>'.$visiteur["h_entrer"].'</td>
+										<td>'.$visiteur["h_sortie"].'</td>
+										<td>'.$visiteur["objet_visite"].'</td>
+										<td>'.$visiteur["Id_User"].'</td>
+									</tr>
+								</tbody>';
+					}
+				}
+
+		}
+		if($Annee!="none" AND $Mois!="none" AND $jour=="none")
+		{
+
+			$l=$connect->query("SELECT U.id_utilisateur,d.Id_User,R.Id_visiteur,R.Nom,R.Prenom,R.Tel,d.Id_visiteur,d.Date_d_entree,d.h_entrer,d.h_sortie,d.Departement,d.Personne_a_contacter,d.objet_visite  FROM Visite d ,visiteur R WHERE R.Id_visiteur=d.Id_visiteur AND U.id_utilisateur=d.Id_User AND YEAR(Date_d_entree)='$Annee' AND MONTH(Date_d_entree)='$Mois'");
+				while ($visiteur=$l->fetch()) {
+					if(isset($visiteur["Id_visiteur"]))
+					{
+						echo'
+								<tbody>
+									<tr>
+										<th scope="row">'.$visiteur["Id_visiteur"].'</th>
+										<td>'.$visiteur["Nom"].'</td>
+										<td>'.$visiteur["Prenom"].'</td>
+										<td>'.$visiteur["Departement"].'</td>
+										<td>'.$visiteur["Personne_a_contacter"].'</td>
+										<td>'.$visiteur["Date_d_entree"].'</td>
+										<td>'.$visiteur["h_entrer"].'</td>
+										<td>'.$visiteur["h_sortie"].'</td>
+										<td>'.$visiteur["objet_visite"].'</td>
+										<td>'.$visiteur["Id_User"].'</td>
+									</tr>
+								</tbody>';
+					}
+				}
+
+		}
+		if($Annee!="none" AND $Mois!="none" AND $jour!="none")
+		{
+			echo $Annee ."<br/>";
+			$l=$connect->query("SELECT R.Id_visiteur,R.Nom,R.Prenom,R.Tel,d.Id_visiteur,d.Date_d_entree,d.h_entrer,d.h_sortie,d.Departement,d.Personne_a_contacter,d.objet_visite  FROM Visite d ,visiteur R WHERE R.Id_visiteur=d.Id_visiteur AND U.id_utilisateur=d.Id_User AND YEAR(Date_d_entree)='$Annee' AND MONTH(Date_d_entree)='$Mois' AND DAY(Date_d_entree)='$jour'");
+				while ($visiteur=$l->fetch()) {
+					if(isset($visiteur["Id_visiteur"]))
+					{
+						echo'
+								<tbody>
+									<tr>
+										<th scope="row">'.$visiteur["Id_visiteur"].'</th>
+										<td>'.$visiteur["Nom"].'</td>
+										<td>'.$visiteur["Prenom"].'</td>
+										<td>'.$visiteur["Departement"].'</td>
+										<td>'.$visiteur["Personne_a_contacter"].'</td>
+										<td>'.$visiteur["Date_d_entree"].'</td>
+										<td>'.$visiteur["h_entrer"].'</td>
+										<td>'.$visiteur["h_sortie"].'</td>
+										<td>'.$visiteur["objet_visite"].'</td>
+										<td>'.$visiteur["Id_User"].'</td>
+									</tr>
+								</tbody>';
+					}
+				}
+
+		}
+		echo 	"	</table>";
+	}
+
+}
+
+
 }
