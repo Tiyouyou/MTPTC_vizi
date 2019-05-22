@@ -6,10 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <script src="view/js/jquery-3.3.1.min.js"></script>
     <script src="view/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="view/js/dateheure.js"></script>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="view/css/bootstrap.min.css">
     <link href="view/css/mdb.min.css" rel="stylesheet">
     <link rel="stylesheet" href="view/css/style.css">
+
 </head>
 	<body>
 		<div id="bar2" class="container-fluid">
@@ -31,7 +33,7 @@
 						require("view/AgentMenu.php");
 					}
 
-					if($_SESSION["Statut"]=="1" and !isset($_GET["enregistrement"]))
+					if($_SESSION["Statut"]=="1" and !isset($_GET["enregistrement"]) AND !isset($_GET["verification"]) AND !isset($_GET["recherche"]) and !isset($_GET["rapport"]))
 					{
 						require("view/AdminMenu.php");
 					}
@@ -44,10 +46,32 @@
 			//-----------------------------------------------------------------------------------------------
 
 			//page User--------------------------------------------------------------------------------------
-				if(isset($_GET["enregistrement"]) AND $_SESSION["Statut"]==1)
+				if($_SESSION["Statut"]==1)
 				{
-					$controler= new ControlerUser;
-					$controler->ConRecordUser();
+					if(isset($_GET["enregistrement"]))
+					{
+						echo '<p id="menu"><a href="index.php"><img src="view/image/menu.png"><br/>MENU PRINCIPAL</a></p>';
+						$controler= new ControlerUser;
+						$controler->ConRecordUser();
+					}
+					if(isset($_GET["rapport"]))
+					{
+						echo '<p id="menu"><a href="index.php"><img src="view/image/menu.png"><br/>MENU PRINCIPAL</a></p>';
+						$controler= new ControlerUser;
+						$controler->ConRapportAdmin();
+					}
+					if(isset($_GET["recherche"]))
+					{
+						echo '<p id="menu"><a href="index.php"><img src="view/image/menu.png"><br/>MENU PRINCIPAL</a></p>';
+						$controler= new ControlerUser;
+						$controler->conseach();
+					}
+
+					if(isset($_GET["verification"]))
+					{
+						echo '<p id="menu"><a href="index.php"><img src="view/image/menu.png"><br/>MENU PRINCIPAL</a></p>';
+						require("view/VisitorVerificationView.php");
+					}
 				}
 				if($_SESSION["Statut"]==0)
 				{
@@ -80,5 +104,12 @@
 			//-------------------------------------------------------------------------------------------------
 			?>
 		</div>
+		<footer>
+
+			<p class="actulite"><img src="view/image/actualite_bar.png"></p>
+			<MARQUEE BGCOLOR="ffb101" id="date_heure">	</MARQUEE>
+			<script type="text/javascript">window.onload = date_heure('date_heure');</script>
+			<MARQUEE BGCOLOR="910909" class="ac1">fdfgfhjlk;''	</MARQUEE>
+		</footer>
 	</body>
 </html>

@@ -80,9 +80,14 @@ em{
 	color: white;
 	border: none;
 	position: right;
-	font-size: 1em;
+	font-size: 0.7em;
 }
-
+#liste
+{
+	border: 2px solid black;
+	height: 200px;
+	overflow: scroll;
+}
 hr
 {
 	margin-top: -5px;
@@ -246,15 +251,20 @@ tbody input:hover
 /*footer-----------------------------------------------------------*/
 footer
 {
-	background-color: #0a0d23;
-	height: 120px;
-	padding: auto;
-	opacity: 0.8;
+	background-color: white;
+	height: 80px;
 }
 footer p
 {
-	text-align: center;
-	color: #404bc2;
-	font-size: 2em;
-	padding: 25px;
+position: absolute;
+}
+marquee
+{
+	margin-top: 8px;
+	width: 99%;
+	height: 30px;
+}
+.ac1
+{
+	color:white;
 }

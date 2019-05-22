@@ -125,4 +125,28 @@
 					$user->chekRapport($jour,$mois,$annee);
 				}
 			}
+			function ConRapportAdmin()
+			{
+				require("view/RapportView.html");
+				require("model/Model.php");
+				$user= new UserModel;
+				if(isset($_POST["Jour"]) AND isset($_POST["Mois"]) AND isset($_POST["Annee"]))
+				{
+
+					$jour=htmlspecialchars($_POST["Jour"]);
+					$mois=htmlspecialchars($_POST["Mois"]);
+					$annee=htmlspecialchars($_POST["Annee"]);
+					$user->adminRapport ($jour,$mois,$annee);
+				}
+			}
+			function conseach()
+			{
+				require("view/RechercheView.php");
+				require("model/Model.php");
+				$user= new UserModel;
+				if(isset($_POST["cin"]))
+				{
+					$user->Search();
+				}
+			}
 		}

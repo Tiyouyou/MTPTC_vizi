@@ -295,7 +295,7 @@ function chekRapport($jour,$Mois,$Annee)
 											<td>'.$visiteur["h_entrer"].'</td>
 											<td>'.$visiteur["h_sortie"].'</td>
 											<td>'.$visiteur["objet_visite"].'</td>
-											<td>'.$visiteur["Id_User].'</td>
+											<td>'.$visiteur["Id_User"].'</td>
 										</tr>
 									</tbody>';
 						}
@@ -386,7 +386,7 @@ function adminRapport ($jour,$Mois,$Annee)
 		if($Annee!="none" AND $Mois!="none" AND $jour!="none")
 		{
 			echo $Annee ."<br/>";
-			$l=$connect->query("SELECT R.Id_visiteur,R.Nom,R.Prenom,R.Tel,d.Id_visiteur,d.Date_d_entree,d.h_entrer,d.h_sortie,d.Departement,d.Personne_a_contacter,d.objet_visite  FROM Visite d ,visiteur R WHERE R.Id_visiteur=d.Id_visiteur AND U.id_utilisateur=d.Id_User AND YEAR(Date_d_entree)='$Annee' AND MONTH(Date_d_entree)='$Mois' AND DAY(Date_d_entree)='$jour'");
+			$l=$connect->query("SELECT R.Id_visiteur,R.Nom,R.Prenom,R.Tel,d.Id_visiteur,d.Date_d_entree,d.h_entrer,d.h_sortie,d.Departement,d.Personne_a_contacter,d.objet_visite  FROM Visite d ,visiteur R WHERE R.Id_visiteur=d.Id_visiteur AND U.id_utilisateur=d.Id_User AND YEAR(Date_d_entree)='$Annee' AND MONTH(Date_d_entree)='$Mois' AND DAY(Date_d_entree)='$jour' ");
 				while ($visiteur=$l->fetch()) {
 					if(isset($visiteur["Id_visiteur"]))
 					{
@@ -413,6 +413,50 @@ function adminRapport ($jour,$Mois,$Annee)
 	}
 
 }
+	function search()
+	{
+		echo'
+		<table class="table">
+			<thead>
+				<tr>
+					<th scope="col">CIN/NIF</th>
+					<th scope="col">Nom</th>
+					<th scope="col">Prénom</th>
+					<th scope="col">TELEPHONE</th>
+					<th scope="col">Nom_utilisateur</th>
+				</tr>
+			</thead>
 
+		';
+		if(isset($_POST["cin"]))
+		{
+			$cin=htmlspecialchars($_POST["cin"]);
+			require("model/Connectiondb.php");
+			$connect=Connection();
+			$l=$connect->query("SELECT Id_utilisateur,Nom,Prenom,tel,Nom_utilisateur FROM Utlisateur WHERE Id_utilisateur='$cin'");
+			while ($Utilisateur=$l->fetch())
+			{
+				$vizi=$Utilisateur["Id_utilisateur"];
+				if(isset($Utilisateur["Id_utilisateur"]))
+				{
+					echo'
+					<tbody>
+					<tr>
+						<td>'.$Utilisateur["Id_utilisateur"].'</td>
+						<td>'.$Utilisateur["Nom"].'</td>
+						<td>'.$Utilisateur["Prenom"].'</td>
+						<td>'.$Utilisateur["tel"].'</td>
+						<td>'.$Utilisateur["Nom_utilisateur"].'</td>
+					</tr>
+					</tbody>';
+				}
+			}
+				echo "</table";
+		}
+		if(!isset($vizi))
+		{
+			
+		}
 
+	}
 }
