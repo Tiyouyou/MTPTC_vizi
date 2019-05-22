@@ -1,5 +1,5 @@
 body{
-	font-family: 'georgia';
+	font-family: 'Arial';
 	background-image: url(../image/back_login.jpg);
 	background-repeat: no-repeat;
 	background-size: contain;
@@ -254,7 +254,7 @@ footer
 	background-color: white;
 	height: 80px;
 }
-footer p
+footer .actulite
 {
 position: absolute;
 }
@@ -264,7 +264,15 @@ marquee
 	width: 99%;
 	height: 30px;
 }
-.ac1
+#ac1
 {
 	color:white;
+}
+#ac1  p{
+	display: inline-block;
+	margin-right: 10px;
+}
+#ac1 h5
+{
+	display: inline-block;
 }

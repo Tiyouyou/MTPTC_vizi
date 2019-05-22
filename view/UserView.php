@@ -109,7 +109,8 @@
 			<p class="actulite"><img src="view/image/actualite_bar.png"></p>
 			<MARQUEE BGCOLOR="ffb101" id="date_heure">	</MARQUEE>
 			<script type="text/javascript">window.onload = date_heure('date_heure');</script>
-			<MARQUEE BGCOLOR="910909" class="ac1">fdfgfhjlk;''	</MARQUEE>
+			<MARQUEE BGCOLOR="910909" id="ac1" class="vizi">fdfgfhjlk;''	</MARQUEE>
+			<script src="view/js/listevisiteur.js"></script>
 		</footer>
 	</body>
 </html>
