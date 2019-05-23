@@ -15,20 +15,27 @@
 <body>
   <div class="container-fluid">
     <div class="blok">
+			<?php
+			if(isset($_GET["id"]) and isset($_GET["nom"]) and isset($_GET["prenom"]) and isset($_GET["tel"]) and isset($_GET["dep"]) and isset($_GET["per"]))
+			{
+				$id=htmlspecialchars($_GET["id"]);
+				$nom=htmlspecialchars($_GET["nom"]);
+				$prenom=htmlspecialchars($_GET["prenom"]);
+				$dep=htmlspecialchars($_GET["dep"]);
+				$per=htmlspecialchars($_GET["per"]);
+			?>
   <div id="html-content-holder" style=" color:  #404bc2; width: 500px;
-          padding-left: 25px; padding-top: 10px;" class="col-md-3">
+          padding-left: 25px; padding-top: 10px;">
           <h5 style="color: white; background-color:#fb3232">
               Carte de Visite
           </h5>
           <p style="color: #3e4b51;">
 
-              CIN/NIF:002-365-569-9<br/>
-              NOM:Jeudi<br/>
-              Prenom:Audine<br/>
-              Persone à Visiter:Gabriel<br/>
-              Département: Direction Generale<br/>
-              Objet de la visite:Jòb<br/>
-
+              CIN/NIF:<?php echo " ".$id;?><br/>
+              NOM:<?php echo " ".$nom;?><br/>
+              Prenom:<?php echo " ".$prenom;?><br/>
+              Persone à Visiter:<?php echo " ".$per;?><br/>
+              Département: <?php echo " ".$dep;?><br/>
           </p>
       </div>
       <center><input id="btn-Preview-Image" type="button" value="Preview"/>
@@ -65,6 +72,9 @@
   });
 
   </script>
+	<?php
+		}
+	?>
 </div>
 </div>
 </body>

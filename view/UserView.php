@@ -7,6 +7,7 @@
     <script src="view/js/jquery-3.3.1.min.js"></script>
     <script src="view/js/bootstrap.min.js"></script>
 		<script type="text/javascript" src="view/js/dateheure.js"></script>
+		<script type="text/javascript" src="view/js/heure.js"></script>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="view/css/bootstrap.min.css">
     <link href="view/css/mdb.min.css" rel="stylesheet">
@@ -22,6 +23,11 @@
 		<p class="logo"><img src="view/image/logo_mini.png"/></p>
 		<hr/>
 		<div class="container-fluid" id="content">
+			<div id="revey">
+				<P><img src="view/image/revey.png"/></p>
+				<p id="heure" class="heure"></p>
+				<script type="text/javascript">window.onload = heure('heure');</script>
+			</div>
 			<?php
 			//menu user-------------------------------------------------------------------------------------
 
@@ -103,13 +109,14 @@
 
 			//-------------------------------------------------------------------------------------------------
 			?>
+
 		</div>
 		<footer>
 
 			<p class="actulite"><img src="view/image/actualite_bar.png"></p>
 			<MARQUEE BGCOLOR="ffb101" id="date_heure">	</MARQUEE>
 			<script type="text/javascript">window.onload = date_heure('date_heure');</script>
-			<MARQUEE BGCOLOR="910909" id="ac1" class="vizi">fdfgfhjlk;''	</MARQUEE>
+			<MARQUEE BGCOLOR="910909" id="ac1" class="vizi">	</MARQUEE>
 			<script src="view/js/listevisiteur.js"></script>
 		</footer>
 	</body>

@@ -12,6 +12,9 @@ p
   background-repeat: no-repeat;
   background-position: center;
   margin: auto;
+  width: 299px;
+  height: 204px;
+  color:red;
 }
 h5
 {
@@ -21,4 +24,8 @@ h5
 #previewImage
 {
   margin: auto;
+}
+.blok
+{
+
 }

@@ -1,7 +1,7 @@
 <div class="row" >
-	<div class="col-md-3 col-ms-3 col-mx-3"><p class="button" id="b1"><a href="index.php?enregistrement"><img src="view/image/en1.png" width="30%"><br/>ENREGISTRER VISITEUR</a></p></div>
+	<div class="col-md-3 col-ms-3 col-mx-3"><p class="button" id="b1"><a href="index.php?enregistrement"><img src="view/image/en1.png" width="30%"><br/>ENREGISTRER UTILISATEUR</a></p></div>
 
-	<div class="col-md-5">
+	<div class="col-md-5" id="tab">
 		<h3>LISTE VISITEUR DANS LE BATIMENT</h3>
 		<div id="liste" class="vizi">
 

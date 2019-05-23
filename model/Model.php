@@ -48,9 +48,9 @@ function RecordVisitor($id_visiteur,$nom,$prenom,$telephone,$personne,$Departeme
 		{
 			if($id_visiteur!=NULL and $nom!=NULL and $prenom!=NULL and $telephone!=NULL and $personne!=NULL and $Departement!=NULL and $objet!=NULL)
 			{
-				if( preg_match ( " #^[0-9]{3}[-/ ]?[0-9]{3}[-/ ]?[0-9]{3}[-/ ]?[0-9]{1}[-/ ]?$# " , $id_visiteur ) and strlen("$id_visiteur")>=10)
+				if((preg_match ( " #^[0-9]{3}[-/ ]?[0-9]{3}[-/ ]?[0-9]{3}[-/ ]?[0-9]{1}[-/ ]?$# " , $id_visiteur ) OR preg_match ( " #^[0-9]{2}[-/ ]?[0-9]{2}[-/ ]?[0-9]{2}[-/ ]?[0-9]{4}[-/ ]?[0-9]{2}[-/ ]?[0-9]{5}[-/ ]?$# " , $id_visiteur ))and strlen("$id_visiteur")>=10)
 				{
-					if (preg_match ( " #^[0-9]{3}[-/ ]?[0-9]{2}[-/ ]?[0-9]{2}[-/ ]?[0-9]{2}[-/ ]?[0-9]{2}?$# " , $telephone ) and strlen("$telephone")>=11){
+					if (preg_match ( " #^[0-9]{2}[-/ ]?[0-9]{2}[-/ ]?[0-9]{2}[-/ ]?[0-9]{2}?$# " , $telephone ) and strlen("$telephone")>=8){
 						if(preg_match('#^[a-zA-Z;/]+$#',$nom) and preg_match('#^[a-zA-Z;/]+$#',$prenom) and preg_match('#^[a-zA-Z;/]+$#',$personne)){
 							if($rep==1)
 							{
@@ -61,16 +61,17 @@ function RecordVisitor($id_visiteur,$nom,$prenom,$telephone,$personne,$Departeme
 								date_default_timezone_set('America/Los_Angeles');
 								$heure = date("H:i");
 								$iduser=$_SESSION["Id_utilisateur"];
+								$telephone="+509 ".$telephone;
 								$con=$connect->query("INSERT INTO `visiteur`(`Id_visiteur`, `Nom`, `Prenom`, `Tel`) VALUES ('$id_visiteur','$nom','$prenom','$telephone')");
 								$con2=$connect->query("INSERT INTO `visite`(`Id_visiteur`, `Id_User`, `Departement`, `Personne_a_contacter`,`h_entrer`,`objet_visite`) VALUES ('$id_visiteur','$iduser','$Departement','$personne','$heure ','$objet')");
 								echo '<script> alert ("Visiteur Enregistrer!")</script>';
-								header("location:view/printcardsView.php?$id_visiteur & $nom & $prenom & $telephone");
+								header("location:view/printcardsView.php?id=".$id_visiteur."& nom=". $nom."& prenom=".$prenom." & tel=". $telephone." & per=".$personne." & dep=".$Departement."");
 							}
 					}
 					else{
 						echo '<script> alert ("Erreur:les champs Nom,Prenom et personne a visite ne doivent pas avoir de caractere speciaux ni de chiffres.")</script>';
 					}
-					}else{echo '<script> alert ("Erreur:Le numero de telephone est invalide,format:50932236233 OU 509-32-23-62-33")</script>';}
+					}else{echo '<script> alert ("Erreur:Le numero de telephone est invalide,format:32236233 OU 32-23-62-33")</script>';}
 				}else{echo '<script> alert ("Erreur:CIN/NIF  invalide,format:1002369874 OU 002-569-638-9")</script>';}
 			}
 			else{
@@ -360,7 +361,7 @@ function adminRapport ($jour,$Mois,$Annee)
 		if($Annee!="none" AND $Mois!="none" AND $jour=="none")
 		{
 
-			$l=$connect->query("SELECT U.id_utilisateur,d.Id_User,R.Id_visiteur,R.Nom,R.Prenom,R.Tel,d.Id_visiteur,d.Date_d_entree,d.h_entrer,d.h_sortie,d.Departement,d.Personne_a_contacter,d.objet_visite  FROM Visite d ,visiteur R WHERE R.Id_visiteur=d.Id_visiteur AND U.id_utilisateur=d.Id_User AND YEAR(Date_d_entree)='$Annee' AND MONTH(Date_d_entree)='$Mois'");
+			$l=$connect->query("SELECT U.id_utilisateur,d.Id_User,R.Id_visiteur,R.Nom,R.Prenom,R.Tel,d.Id_visiteur,d.Date_d_entree,d.h_entrer,d.h_sortie,d.Departement,d.Personne_a_contacter,d.objet_visite  FROM Visite d ,visiteur R,utlisateur U WHERE R.Id_visiteur=d.Id_visiteur AND U.id_utilisateur=d.Id_User AND YEAR(Date_d_entree)='$Annee' AND MONTH(Date_d_entree)='$Mois'");
 				while ($visiteur=$l->fetch()) {
 					if(isset($visiteur["Id_visiteur"]))
 					{
@@ -386,7 +387,7 @@ function adminRapport ($jour,$Mois,$Annee)
 		if($Annee!="none" AND $Mois!="none" AND $jour!="none")
 		{
 			echo $Annee ."<br/>";
-			$l=$connect->query("SELECT R.Id_visiteur,R.Nom,R.Prenom,R.Tel,d.Id_visiteur,d.Date_d_entree,d.h_entrer,d.h_sortie,d.Departement,d.Personne_a_contacter,d.objet_visite  FROM Visite d ,visiteur R WHERE R.Id_visiteur=d.Id_visiteur AND U.id_utilisateur=d.Id_User AND YEAR(Date_d_entree)='$Annee' AND MONTH(Date_d_entree)='$Mois' AND DAY(Date_d_entree)='$jour' ");
+			$l=$connect->query("SELECT U.id_utilisateur,d.Id_User,R.Id_visiteur,R.Nom,R.Prenom,R.Tel,d.Id_visiteur,d.Date_d_entree,d.h_entrer,d.h_sortie,d.Departement,d.Personne_a_contacter,d.objet_visite  FROM Visite d ,visiteur R,utlisateur U WHERE R.Id_visiteur=d.Id_visiteur AND U.id_utilisateur=d.Id_User AND YEAR(Date_d_entree)='$Annee' AND MONTH(Date_d_entree)='$Mois' AND DAY(Date_d_entree)='$jour' ");
 				while ($visiteur=$l->fetch()) {
 					if(isset($visiteur["Id_visiteur"]))
 					{
@@ -455,7 +456,7 @@ function adminRapport ($jour,$Mois,$Annee)
 		}
 		if(!isset($vizi))
 		{
-			
+
 		}
 
 	}

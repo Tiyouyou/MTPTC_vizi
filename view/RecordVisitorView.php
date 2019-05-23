@@ -3,10 +3,10 @@
 	<h2>ENREGISTRER VISITEUR</h2>
 		<form method="post" action="#">
 			<p><input type="text" name="cin" minlength="10"  maxlength="22" size="50" placeholder="CIN/NIF"></p>
-			<p><input type="text" name="nom" maxlength="10" size="50" placeholder="Nom"></p>
-			<p><input type="text" name="prenom"size="50" maxlength="10" placeholder="Prenom"></p>
-			<p><input type="tel" name="telephone" minlength="11" maxlength="15" sixe="30" placeholder="Telephone"></p>
-			<p><input type="text" name="personne" maxlength="10" size="50" placeholder="Personne à visiter"></p>
+			<p><input type="text" name="nom" minlength="2" maxlength="10" size="50" placeholder="Nom"></p>
+			<p><input type="text" name="prenom"size="50" minlength="2" maxlength="10" placeholder="Prenom"></p>
+			<p>+509 <input type="tel" name="telephone" minlength="8" maxlength="12" sixe="30" placeholder="Telephone"></p>
+			<p><input type="text" name="personne" maxlength="30" size="50" placeholder="Personne à visiter"></p>
 			<p><select name="Departement">
 				<option value="CC">Comptabilité centrale (CC)</option>
 				<option value="CDD">Coordination Des Directions Départementales(CDD)</option>
