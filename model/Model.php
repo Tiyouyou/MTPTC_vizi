@@ -30,10 +30,25 @@
 		{
 			require("model/Connectiondb.php");
 			$connect=Connection();
+			$vmod=new UserModel;
 			if(isset($id) and isset($nom) and isset($prenom) and isset($telephone) and isset($pseudo) and isset ($password) and isset($Statut))
 			{
-				$con=$connect->query("INSERT INTO `utlisateur`(`Id_utilisateur`, `Nom`, `Prenom`,`tel`, `Nom_utilisateur`, `Password`, `Statut`) VALUES ('$id','$nom','$prenom','$telephone','$pseudo','$password','$Statut')");
-				echo '<script> alert("Utilisateur Enregistrer.")</script>';
+				$rep=$vmod->chekUser($id,$connect);
+				if((preg_match ( " #^[0-9]{3}[-/ ]?[0-9]{3}[-/ ]?[0-9]{3}[-/ ]?[0-9]{1}[-/ ]?$# " , $id ) OR preg_match ( " #^[0-9]{2}[-/ ]?[0-9]{2}[-/ ]?[0-9]{2}[-/ ]?[0-9]{4}[-/ ]?[0-9]{2}[-/ ]?[0-9]{5}[-/ ]?$# " , $id))and strlen("$id")>=10)
+				{
+					if (preg_match ( " #^[0-9]{2}[-/ ]?[0-9]{2}[-/ ]?[0-9]{2}[-/ ]?[0-9]{2}?$# " , $telephone ) and strlen("$telephone")>=8)
+					{
+						if($rep==1)
+						{
+							echo '<script>alert("Erreur:code CIN/NIF Existant,Utilisateur  déjà  Enregistrer");</script>';
+						}
+						else{
+							$telephone="+509".$telephone;
+							$con=$connect->query("INSERT INTO `utlisateur`(`Id_utilisateur`, `Nom`, `Prenom`,`tel`, `Nom_utilisateur`, `Password`, `Statut`) VALUES ('$id','$nom','$prenom','$telephone','$pseudo','$password','$Statut')");
+							echo '<script> alert("Utilisateur Enregistrer.")</script>';
+						}
+					}else{echo '<script> alert ("Erreur:Le numero de telephone est invalide,format:32236233 OU 32-23-62-33")</script>';}
+				}else{echo '<script> alert ("Erreur:CIN/NIF  invalide,format:1002369874 OU 002-569-638-9")</script>';}
 			}
 		}
 		//enregistrement visiteur......................................................................................................
@@ -117,17 +132,19 @@ function RecordVisitor($id_visiteur,$nom,$prenom,$telephone,$personne,$Departeme
 							<td>'.$visiteur["Departement"].'</td>
 							<td>'.$visiteur["Personne_a_contacter"].'</td>
 							<td>'.$visiteur["Date_d_entree"].'</td>
-							<td>'.$visiteur["h_entrer"].'</td>
-							<td><form method="post" action="controler/Verification.php">
-									<SELECT type="hidden" name="val" style="display: none;"><option  value="'.$visiteur["Id_visiteur"].'"</SELECT>
-									<input type="submit" name="sorti" value="Sortie">
-									</form></td>
-						</tr>
-					</tbody>
+							<td>'.$visiteur["h_entrer"].'</td>';
+				if($_SESSION["Statut"]=="0")
+				{
+						echo'		<td><form method="post" action="controler/Verification.php">
+										<SELECT type="hidden" name="val" style="display: none;"><option  value="'.$visiteur["Id_visiteur"].'"</SELECT>
+										<input type="submit" name="sorti" value="Sortie">
+										</form></td>
+							</tr>
+						</tbody>
 
 
-			';
-
+				';
+			}
 		}
 		echo 	"	</table>";
 
@@ -203,7 +220,18 @@ function RecordVisitor($id_visiteur,$nom,$prenom,$telephone,$personne,$Departeme
 			}
 		}
 	}
-function chekRapport($jour,$Mois,$Annee)
+	function chekUser($id,$con)
+	{
+		$connect=$con;
+		$l=$connect->query("SELECT Id_utilisateur FROM `utlisateur` WHERE Id_utilisateur='$id'");
+		while ($user=$l->fetch()) {
+			if(isset($user["Id_utilisateur"]))
+			{
+				return 1;
+			}
+		}
+	}
+function chekRapport($jour,$Mois,$Annee,$Departement)
 	{
 		require("model/Connectiondb.php");
 		$connect=Connection();
@@ -230,7 +258,7 @@ function chekRapport($jour,$Mois,$Annee)
 			if($Annee!="none" AND $Mois=="none" AND $jour=="none")
 			{
 				echo $Annee ."<br/>";
-				$l=$connect->query("SELECT R.Id_visiteur,R.Nom,R.Prenom,R.Tel,d.Id_visiteur,d.Date_d_entree,d.h_entrer,d.h_sortie,d.Departement,d.Personne_a_contacter,d.objet_visite  FROM Visite d ,visiteur R WHERE R.Id_visiteur=d.Id_visiteur AND YEAR(Date_d_entree)='$Annee'");
+				$l=$connect->query("SELECT R.Id_visiteur,R.Nom,R.Prenom,R.Tel,d.Id_visiteur,d.Date_d_entree,d.h_entrer,d.h_sortie,d.Departement,d.Personne_a_contacter,d.objet_visite  FROM Visite d ,visiteur R WHERE R.Id_visiteur=d.Id_visiteur AND YEAR(Date_d_entree)='$Annee' AND d.Departement='$Departement'");
 					while ($visiteur=$l->fetch()) {
 						if(isset($visiteur["Id_visiteur"]))
 						{
@@ -255,7 +283,7 @@ function chekRapport($jour,$Mois,$Annee)
 			if($Annee!="none" AND $Mois!="none" AND $jour=="none")
 			{
 
-				$l=$connect->query("SELECT R.Id_visiteur,R.Nom,R.Prenom,R.Tel,d.Id_visiteur,d.Date_d_entree,d.h_entrer,d.h_sortie,d.Departement,d.Personne_a_contacter,d.objet_visite  FROM Visite d ,visiteur R WHERE R.Id_visiteur=d.Id_visiteur AND YEAR(Date_d_entree)='$Annee' AND MONTH(Date_d_entree)='$Mois'");
+				$l=$connect->query("SELECT R.Id_visiteur,R.Nom,R.Prenom,R.Tel,d.Id_visiteur,d.Date_d_entree,d.h_entrer,d.h_sortie,d.Departement,d.Personne_a_contacter,d.objet_visite  FROM Visite d ,visiteur R WHERE R.Id_visiteur=d.Id_visiteur AND YEAR(Date_d_entree)='$Annee' AND MONTH(Date_d_entree)='$Mois' AND d.Departement='$Departement'");
 					while ($visiteur=$l->fetch()) {
 						if(isset($visiteur["Id_visiteur"]))
 						{
@@ -280,7 +308,7 @@ function chekRapport($jour,$Mois,$Annee)
 			if($Annee!="none" AND $Mois!="none" AND $jour!="none")
 			{
 				echo $Annee ."<br/>";
-				$l=$connect->query("SELECT R.Id_visiteur,R.Nom,R.Prenom,R.Tel,d.Id_visiteur,d.Date_d_entree,d.h_entrer,d.h_sortie,d.Departement,d.Personne_a_contacter,d.objet_visite  FROM Visite d ,visiteur R WHERE R.Id_visiteur=d.Id_visiteur AND YEAR(Date_d_entree)='$Annee' AND MONTH(Date_d_entree)='$Mois' AND DAY(Date_d_entree)='$jour'");
+				$l=$connect->query("SELECT R.Id_visiteur,R.Nom,R.Prenom,R.Tel,d.Id_visiteur,d.Date_d_entree,d.h_entrer,d.h_sortie,d.Departement,d.Personne_a_contacter,d.objet_visite  FROM Visite d ,visiteur R WHERE R.Id_visiteur=d.Id_visiteur AND YEAR(Date_d_entree)='$Annee' AND MONTH(Date_d_entree)='$Mois' AND DAY(Date_d_entree)='$jour' AND d.Departement='$Departement'");
 					while ($visiteur=$l->fetch()) {
 						if(isset($visiteur["Id_visiteur"]))
 						{
@@ -296,7 +324,6 @@ function chekRapport($jour,$Mois,$Annee)
 											<td>'.$visiteur["h_entrer"].'</td>
 											<td>'.$visiteur["h_sortie"].'</td>
 											<td>'.$visiteur["objet_visite"].'</td>
-											<td>'.$visiteur["Id_User"].'</td>
 										</tr>
 									</tbody>';
 						}
@@ -307,7 +334,7 @@ function chekRapport($jour,$Mois,$Annee)
 		}
 
 	}
-function adminRapport ($jour,$Mois,$Annee)
+function adminRapport ($jour,$Mois,$Annee,$Departement)
 {
 	require("model/Connectiondb.php");
 	$connect=Connection();
@@ -335,7 +362,7 @@ function adminRapport ($jour,$Mois,$Annee)
 		if($Annee!="none" AND $Mois=="none" AND $jour=="none")
 		{
 			echo $Annee ."<br/>";
-			$l=$connect->query("SELECT U.id_utilisateur,d.Id_User,R.Id_visiteur,R.Nom,R.Prenom,R.Tel,d.Id_visiteur,d.Date_d_entree,d.h_entrer,d.h_sortie,d.Departement,d.Personne_a_contacter,d.objet_visite  FROM Visite d ,visiteur R,utlisateur U WHERE R.Id_visiteur=d.Id_visiteur AND U.id_utilisateur=d.Id_User AND YEAR(Date_d_entree)='$Annee'");
+			$l=$connect->query("SELECT U.id_utilisateur,d.Id_User,R.Id_visiteur,R.Nom,R.Prenom,R.Tel,d.Id_visiteur,d.Date_d_entree,d.h_entrer,d.h_sortie,d.Departement,d.Personne_a_contacter,d.objet_visite  FROM Visite d ,visiteur R,utlisateur U WHERE R.Id_visiteur=d.Id_visiteur AND U.id_utilisateur=d.Id_User AND YEAR(Date_d_entree)='$Annee' AND d.Departement='$Departement'");
 				while ($visiteur=$l->fetch()) {
 					if(isset($visiteur["Id_visiteur"]))
 					{
@@ -361,7 +388,7 @@ function adminRapport ($jour,$Mois,$Annee)
 		if($Annee!="none" AND $Mois!="none" AND $jour=="none")
 		{
 
-			$l=$connect->query("SELECT U.id_utilisateur,d.Id_User,R.Id_visiteur,R.Nom,R.Prenom,R.Tel,d.Id_visiteur,d.Date_d_entree,d.h_entrer,d.h_sortie,d.Departement,d.Personne_a_contacter,d.objet_visite  FROM Visite d ,visiteur R,utlisateur U WHERE R.Id_visiteur=d.Id_visiteur AND U.id_utilisateur=d.Id_User AND YEAR(Date_d_entree)='$Annee' AND MONTH(Date_d_entree)='$Mois'");
+			$l=$connect->query("SELECT U.id_utilisateur,d.Id_User,R.Id_visiteur,R.Nom,R.Prenom,R.Tel,d.Id_visiteur,d.Date_d_entree,d.h_entrer,d.h_sortie,d.Departement,d.Personne_a_contacter,d.objet_visite  FROM Visite d ,visiteur R,utlisateur U WHERE R.Id_visiteur=d.Id_visiteur AND U.id_utilisateur=d.Id_User AND YEAR(Date_d_entree)='$Annee' AND MONTH(Date_d_entree)='$Mois' AND d.Departement='$Departement'");
 				while ($visiteur=$l->fetch()) {
 					if(isset($visiteur["Id_visiteur"]))
 					{
@@ -387,7 +414,7 @@ function adminRapport ($jour,$Mois,$Annee)
 		if($Annee!="none" AND $Mois!="none" AND $jour!="none")
 		{
 			echo $Annee ."<br/>";
-			$l=$connect->query("SELECT U.id_utilisateur,d.Id_User,R.Id_visiteur,R.Nom,R.Prenom,R.Tel,d.Id_visiteur,d.Date_d_entree,d.h_entrer,d.h_sortie,d.Departement,d.Personne_a_contacter,d.objet_visite  FROM Visite d ,visiteur R,utlisateur U WHERE R.Id_visiteur=d.Id_visiteur AND U.id_utilisateur=d.Id_User AND YEAR(Date_d_entree)='$Annee' AND MONTH(Date_d_entree)='$Mois' AND DAY(Date_d_entree)='$jour' ");
+			$l=$connect->query("SELECT U.id_utilisateur,d.Id_User,R.Id_visiteur,R.Nom,R.Prenom,R.Tel,d.Id_visiteur,d.Date_d_entree,d.h_entrer,d.h_sortie,d.Departement,d.Personne_a_contacter,d.objet_visite  FROM Visite d ,visiteur R,utlisateur U WHERE R.Id_visiteur=d.Id_visiteur AND U.id_utilisateur=d.Id_User AND YEAR(Date_d_entree)='$Annee' AND MONTH(Date_d_entree)='$Mois' AND DAY(Date_d_entree)='$jour' AND d.Departement='$Departement' ");
 				while ($visiteur=$l->fetch()) {
 					if(isset($visiteur["Id_visiteur"]))
 					{
@@ -425,6 +452,8 @@ function adminRapport ($jour,$Mois,$Annee)
 					<th scope="col">Prénom</th>
 					<th scope="col">TELEPHONE</th>
 					<th scope="col">Nom_utilisateur</th>
+					<th scope="col">MOTS DE PASSE</th>
+					<th scope="col">ACTIVATION</th>
 				</tr>
 			</thead>
 
@@ -434,7 +463,7 @@ function adminRapport ($jour,$Mois,$Annee)
 			$cin=htmlspecialchars($_POST["cin"]);
 			require("model/Connectiondb.php");
 			$connect=Connection();
-			$l=$connect->query("SELECT Id_utilisateur,Nom,Prenom,tel,Nom_utilisateur FROM Utlisateur WHERE Id_utilisateur='$cin'");
+			$l=$connect->query("SELECT Id_utilisateur,Nom,Prenom,tel,Nom_utilisateur,Active FROM Utlisateur WHERE Id_utilisateur='$cin'");
 			while ($Utilisateur=$l->fetch())
 			{
 				$vizi=$Utilisateur["Id_utilisateur"];
@@ -447,8 +476,32 @@ function adminRapport ($jour,$Mois,$Annee)
 						<td>'.$Utilisateur["Nom"].'</td>
 						<td>'.$Utilisateur["Prenom"].'</td>
 						<td>'.$Utilisateur["tel"].'</td>
-						<td>'.$Utilisateur["Nom_utilisateur"].'</td>
-					</tr>
+						<td>'.$Utilisateur["Nom_utilisateur"].'</td>';
+
+						echo'<td><form method="post" action="index.php?modification">
+									<SELECT type="hidden" name="val" style="display: none;"><option  value="'.$Utilisateur["Id_utilisateur"].'"</SELECT>
+									<input type="submit" name="sorti" value="MODIFIER">
+									</form></td>';
+						if($Utilisateur["Active"]==0)
+						{
+							echo'<td><form method="post" action="model/Activation.php">
+										<SELECT type="hidden" name="val" style="display: none;"><option  value="'.$Utilisateur["Id_utilisateur"].'"</SELECT>
+										<SELECT type="hidden" name="val" style="display: none;"><option  value="'.$Utilisateur["Active"].'"</SELECT>
+										<input type="submit" name="sorti" value="DESACTIVER">
+										</form></td>';
+						}
+						if($Utilisateur["Active"]==1)
+						{
+							echo'<td><form method="post" action="model/Activation.php">
+										<SELECT type="hidden" name="val" style="display: none;"><option  value="'.$Utilisateur["Id_utilisateur"].'"</SELECT>
+										<SELECT type="hidden" name="val" style="display: none;"><option  value="'.$Utilisateur["Active"].'"</SELECT>
+										<input type="submit" name="sorti" value="ACTIVER">
+										</form></td>';
+						}
+
+
+					echo'	</tr>
+
 					</tbody>';
 				}
 			}

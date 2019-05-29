@@ -43,7 +43,10 @@
 					{
 						require("view/AdminMenu.php");
 					}
-
+					if($_SESSION["Statut"]=="2" and !isset($_GET["recherche"]) and !isset($_GET["rapport"]) AND !isset($_GET["verification"]) )
+					{
+						require("view/DirectionView.php");
+					}
 				}
 				else{
 					header("location:index.php");
@@ -105,6 +108,20 @@
 						$controler = new ControlerUser;
 						$controler->conchekRapport();
 					}
+				}
+				if($_SESSION["Statut"]==2)
+				{
+						if(isset($_GET["rapport"]))
+						{
+							echo '<p id="menu"><a href="index.php"><img src="view/image/menu.png"><br/>MENU PRINCIPAL</a></p>';
+							$controler = new ControlerUser;
+							$controler->conchekRapport();
+						}
+						if(isset($_GET["verification"]))
+						{
+							echo '<p id="menu"><a href="index.php"><img src="view/image/menu.png"><br/>MENU PRINCIPAL</a></p>';
+							require("view/VisitorVerificationView.php");
+						}
 				}
 
 			//-------------------------------------------------------------------------------------------------

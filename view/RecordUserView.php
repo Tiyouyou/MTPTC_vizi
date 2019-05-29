@@ -5,7 +5,7 @@
 			<p><input type="text" name="id" minlength="10" maxlength="22"size="50" placeholder="CIN/NIF"></p>
 			<p><input type="text" name="nom" minlength="2" maxlength="10" size="50" placeholder="Nom"></p>
 			<p><input type="text" name ="prenom" size="50" maxlength="10" placeholder="Prenom"></p>
-			<p><input type="tel" name="telephone" minlength="8" maxlength="12" sixe="30" placeholder="Telephone"></p>
+			<p>+509 <input type="tel" name="telephone" minlength="8" maxlength="12" sixe="30" placeholder="Telephone"></p>
 			<p><input type="text"name="pseudo" minlength="5" maxlength="8" size="50" placeholder="Nom Utilisateur"></p>
       <p><input type="password" name="password" minlength="8" maxlength="20" size="50" placeholder="Password"></p>
 			<P>

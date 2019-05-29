@@ -122,7 +122,8 @@
 					$jour=htmlspecialchars($_POST["Jour"]);
 					$mois=htmlspecialchars($_POST["Mois"]);
 					$annee=htmlspecialchars($_POST["Annee"]);
-					$user->chekRapport($jour,$mois,$annee);
+					$Departement=htmlspecialchars($_POST["Departement"]);
+					$user->chekRapport($jour,$mois,$annee,$Departement);
 				}
 			}
 			function ConRapportAdmin()
@@ -132,11 +133,11 @@
 				$user= new UserModel;
 				if(isset($_POST["Jour"]) AND isset($_POST["Mois"]) AND isset($_POST["Annee"]))
 				{
-
+					$Departement=htmlspecialchars($_POST["Departement"]);
 					$jour=htmlspecialchars($_POST["Jour"]);
 					$mois=htmlspecialchars($_POST["Mois"]);
 					$annee=htmlspecialchars($_POST["Annee"]);
-					$user->adminRapport ($jour,$mois,$annee);
+					$user->chekRapport($jour,$mois,$annee,$Departement);
 				}
 			}
 			function conseach()
