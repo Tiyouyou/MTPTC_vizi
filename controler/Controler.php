@@ -150,4 +150,14 @@
 					$user->Search();
 				}
 			}
+			function Modif($id)
+			{
+				if(isset($id))
+				{
+					$id=htmlspecialchars($id);
+					require("../model/Model.php");
+					$user= new UserModel;
+					$user->modificationUser($id);
+				}
+			}
 		}

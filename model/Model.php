@@ -33,23 +33,29 @@
 			$vmod=new UserModel;
 			if(isset($id) and isset($nom) and isset($prenom) and isset($telephone) and isset($pseudo) and isset ($password) and isset($Statut))
 			{
-				$rep=$vmod->chekUser($id,$connect);
-				if((preg_match ( " #^[0-9]{3}[-/ ]?[0-9]{3}[-/ ]?[0-9]{3}[-/ ]?[0-9]{1}[-/ ]?$# " , $id ) OR preg_match ( " #^[0-9]{2}[-/ ]?[0-9]{2}[-/ ]?[0-9]{2}[-/ ]?[0-9]{4}[-/ ]?[0-9]{2}[-/ ]?[0-9]{5}[-/ ]?$# " , $id))and strlen("$id")>=10)
+				if($id!=NULL and $nom!=NULL and $prenom!=NULL and $telephone!=NULL and $pseudo!=NULL and $password!=NULL and $Statut!=NULL)
 				{
-					if (preg_match ( " #^[0-9]{2}[-/ ]?[0-9]{2}[-/ ]?[0-9]{2}[-/ ]?[0-9]{2}?$# " , $telephone ) and strlen("$telephone")>=8)
+					$rep=$vmod->chekUser($id,$connect);
+					if((preg_match ( " #^[0-9]{3}[-/ ]?[0-9]{3}[-/ ]?[0-9]{3}[-/ ]?[0-9]{1}[-/ ]?$# " , $id ) OR preg_match ( " #^[0-9]{2}[-/ ]?[0-9]{2}[-/ ]?[0-9]{2}[-/ ]?[0-9]{4}[-/ ]?[0-9]{2}[-/ ]?[0-9]{5}[-/ ]?$# " , $id))and strlen("$id")>=10)
 					{
-						if($rep==1)
+						if (preg_match ( " #^[0-9]{2}[-/ ]?[0-9]{2}[-/ ]?[0-9]{2}[-/ ]?[0-9]{2}?$# " , $telephone ) and strlen("$telephone")>=8)
 						{
-							echo '<script>alert("Erreur:code CIN/NIF Existant,Utilisateur  déjà  Enregistrer");</script>';
-						}
-						else{
-							$telephone="+509".$telephone;
-							$con=$connect->query("INSERT INTO `utlisateur`(`Id_utilisateur`, `Nom`, `Prenom`,`tel`, `Nom_utilisateur`, `Password`, `Statut`) VALUES ('$id','$nom','$prenom','$telephone','$pseudo','$password','$Statut')");
-							echo '<script> alert("Utilisateur Enregistrer.")</script>';
-						}
-					}else{echo '<script> alert ("Erreur:Le numero de telephone est invalide,format:32236233 OU 32-23-62-33")</script>';}
-				}else{echo '<script> alert ("Erreur:CIN/NIF  invalide,format:1002369874 OU 002-569-638-9")</script>';}
+							if($rep==1)
+							{
+								echo '<script>alert("Erreur:code CIN/NIF Existant,Utilisateur  déjà  Enregistrer");</script>';
+							}
+							else{
+								$telephone="+509".$telephone;
+								$con=$connect->query("INSERT INTO `utlisateur`(`Id_utilisateur`, `Nom`, `Prenom`,`tel`, `Nom_utilisateur`, `Password`, `Statut`) VALUES ('$id','$nom','$prenom','$telephone','$pseudo','$password','$Statut')");
+								echo '<script> alert("Utilisateur Enregistrer.")</script>';
+							}
+						}else{echo '<script> alert ("Erreur:Le numero de telephone est invalide,format:32236233 OU 32-23-62-33")</script>';}
+					}else{echo '<script> alert ("Erreur:CIN/NIF  invalide,format:1002369874 OU 002-569-638-9")</script>';}
+				}	else{
+						echo '<script> alert ("Erreur:Champ vide, Veuillez Remplir tout les champs du formulaire")</script>';
+					}
 			}
+
 		}
 		//enregistrement visiteur......................................................................................................
 function RecordVisitor($id_visiteur,$nom,$prenom,$telephone,$personne,$Departement,$objet)
@@ -478,24 +484,23 @@ function adminRapport ($jour,$Mois,$Annee,$Departement)
 						<td>'.$Utilisateur["tel"].'</td>
 						<td>'.$Utilisateur["Nom_utilisateur"].'</td>';
 
-						echo'<td><form method="post" action="index.php?modification">
-									<SELECT type="hidden" name="val" style="display: none;"><option  value="'.$Utilisateur["Id_utilisateur"].'"</SELECT>
+						echo'<td><form method="post" action="view/ModifiPassword.php?val='.$Utilisateur["Id_utilisateur"].'">
 									<input type="submit" name="sorti" value="MODIFIER">
 									</form></td>';
 						if($Utilisateur["Active"]==0)
 						{
 							echo'<td><form method="post" action="model/Activation.php">
-										<SELECT type="hidden" name="val" style="display: none;"><option  value="'.$Utilisateur["Id_utilisateur"].'"</SELECT>
-										<SELECT type="hidden" name="val" style="display: none;"><option  value="'.$Utilisateur["Active"].'"</SELECT>
-										<input type="submit" name="sorti" value="DESACTIVER">
+										<SELECT type="hidden" name="val" style="display: none;"><option  value="'.$Utilisateur["Id_utilisateur"].'"></option>"
+										<option  value="'.$Utilisateur["Active"].'></option>"</SELECT>
+										<input type="submit" name="desactive" value="DESACTIVER">
 										</form></td>';
 						}
 						if($Utilisateur["Active"]==1)
 						{
 							echo'<td><form method="post" action="model/Activation.php">
-										<SELECT type="hidden" name="val" style="display: none;"><option  value="'.$Utilisateur["Id_utilisateur"].'"</SELECT>
-										<SELECT type="hidden" name="val" style="display: none;"><option  value="'.$Utilisateur["Active"].'"</SELECT>
-										<input type="submit" name="sorti" value="ACTIVER">
+										<SELECT type="hidden" name="val" style="display: none;"><option  value="'.$Utilisateur["Id_utilisateur"].'"></option>"
+										<option  value="'.$Utilisateur["Active"].'></option>"</SELECT>
+										<input type="submit" name="active" value="Activer">
 										</form></td>';
 						}
 
@@ -513,4 +518,43 @@ function adminRapport ($jour,$Mois,$Annee,$Departement)
 		}
 
 	}
-}
+	function modificationUser($id)
+	{
+		require("Connectiondb.php");
+			$id=htmlspecialchars($id);
+			if(isset($_POST["password"]) AND isset($_POST["passwordConfirm"]))
+			{
+					if($_POST["password"]!=NULL AND $_POST["passwordConfirm"]!=NULL)
+					{
+						$pass=htmlspecialchars($_POST["password"]);
+						$pass2=htmlspecialchars($_POST["passwordConfirm"]);
+						if($pass == $pass2)
+						{
+							$connect=Connection();
+							$vuser= new UserModel;
+							$rep=$vuser->chekUser($id,$connect);
+							if($rep==1)
+							{
+								$password=htmlspecialchars($_POST["password"]);
+								$long = strlen($password);
+								$p="@#$%".$long."123".$password."+_)(*&^";
+								$pass=hash('sha512', $p);
+
+								$sql=$connect->query("UPDATE `utlisateur` SET `Password`='$pass' WHERE `Id_utilisateur`='$id' ");
+								header("location:ModifiPassword.php?001");
+							}
+							else {
+								header("location:../index.php");
+							}
+
+						}
+					}
+					else {
+						echo '<script> alert ("Erreur:Champ vide, Veuillez Remplir tout les champs du formulaire")</script>';
+					}
+
+				}
+
+		}
+
+	}

@@ -39,7 +39,7 @@
 						require("view/AgentMenu.php");
 					}
 
-					if($_SESSION["Statut"]=="1" and !isset($_GET["enregistrement"]) AND !isset($_GET["verification"]) AND !isset($_GET["recherche"]) and !isset($_GET["rapport"]))
+					if($_SESSION["Statut"]=="1" and !isset($_GET["enregistrement"]) AND !isset($_GET["verification"]) AND !isset($_GET["recherche"]) and !isset($_GET["rapport"])and !isset($_GET["modification"]))
 					{
 						require("view/AdminMenu.php");
 					}
@@ -55,6 +55,7 @@
 			//-----------------------------------------------------------------------------------------------
 
 			//page User--------------------------------------------------------------------------------------
+				//admin..............................................
 				if($_SESSION["Statut"]==1)
 				{
 					if(isset($_GET["enregistrement"]))
@@ -82,6 +83,7 @@
 						require("view/VisitorVerificationView.php");
 					}
 				}
+				//agent.............................................................................
 				if($_SESSION["Statut"]==0)
 				{
 					if(isset($_GET["enregistrement"]))

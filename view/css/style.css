@@ -85,9 +85,11 @@ em{
 }
 #liste
 {
-	border: 2px solid black;
+	border-bottom: 1px solid black;
 	height: 200px;
 	overflow: scroll;
+	margin: auto;
+	border-top: 1px solid black;
 }
 hr
 {
