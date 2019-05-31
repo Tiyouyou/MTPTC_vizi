@@ -86,7 +86,6 @@ function RecordVisitor($id_visiteur,$nom,$prenom,$telephone,$personne,$Departeme
 								$con=$connect->query("INSERT INTO `visiteur`(`Id_visiteur`, `Nom`, `Prenom`, `Tel`) VALUES ('$id_visiteur','$nom','$prenom','$telephone')");
 								$con2=$connect->query("INSERT INTO `visite`(`Id_visiteur`, `Id_User`, `Departement`, `Personne_a_contacter`,`h_entrer`,`objet_visite`) VALUES ('$id_visiteur','$iduser','$Departement','$personne','$heure ','$objet')");
 								echo '<script> alert ("Visiteur Enregistrer!")</script>';
-								header("location:view/printcardsView.php?id=".$id_visiteur."& nom=". $nom."& prenom=".$prenom." & tel=". $telephone." & per=".$personne." & dep=".$Departement."");
 							}
 					}
 					else{
@@ -173,6 +172,7 @@ function RecordVisitor($id_visiteur,$nom,$prenom,$telephone,$personne,$Departeme
 						<th scope="col">Date De Visite</th>
 						<th scope="col">H_ENTRÉE</th>
 						<th scope="col">H_SORTIE</th>
+						<th></th>
 					</tr>
 				</thead>
 
@@ -199,6 +199,7 @@ function RecordVisitor($id_visiteur,$nom,$prenom,$telephone,$personne,$Departeme
 									<td>'.$visiteur["Date_d_entree"].'</td>
 									<td>'.$visiteur["h_entrer"].'</td>
 									<td>'.$visiteur["h_sortie"].'</td>
+									<td><a href="index.php?visite" class="btn2">Visite</a></td>
 								</tr>
 							</tbody>
 

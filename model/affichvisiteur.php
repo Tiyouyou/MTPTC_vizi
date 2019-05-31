@@ -9,7 +9,7 @@ while($visiteur=$sql->fetch()){
   if(isset($visiteur["Id_visiteur"]))
   {
     echo'<p> '.$p.'.- CIN/NIF:'.$visiteur["Id_visiteur"].', NOM:'.$visiteur["Nom"].' ,PRÉNOM:'.$visiteur["Prenom"].' ,TEL:'.$visiteur["Tel"].', DATE_ENTRÉE:'.$visiteur["Date_d_entree"].'</p>';
-    echo'<p>***</p>';
+    echo'<p>*****</p>';
     $p++;
     $ok=1;
   }

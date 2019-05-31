@@ -164,6 +164,16 @@ hr
 {
 	margin-top: 10px;
 }
+.btn2
+{
+	background-color: #0a0d23;
+	color: #404bc2;
+	border:2px solid #404bc2;
+	border-radius: 6px 6px 6px;
+	font-size: 1.1em;
+	padding: 5px;
+	opacity: 1;
+}
 .btn
 {
 	background-color: #0a0d23;
@@ -174,6 +184,11 @@ hr
 	opacity: 1;
 }
 .btn:hover
+{
+	color: #8b0e0e;
+	border:2px solid #8b0e0e;
+}
+.btn2:hover
 {
 	color: #8b0e0e;
 	border:2px solid #8b0e0e;

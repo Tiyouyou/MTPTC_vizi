@@ -30,7 +30,6 @@
 		{
 			require("view/UserView.php");
 		}
-		//mysql_close($con);
 	?>
 
 </body>
