@@ -160,4 +160,26 @@
 					$user->modificationUser($id);
 				}
 			}
+			function ConRvisite()
+			{
+				require("view/RecordVisiteView.php");
+				require("model/Model.php");
+				if(isset($_POST["cin"]) and isset($_POST["personne"]) and isset($_POST["Departement"]) and isset($_POST["objet"]))
+				{
+					if($_POST["cin"]!=NULL and $_POST["personne"]!=NULL and $_POST["Departement"]!=NULL and $_POST["objet"]!=NULL){
+						$cin=htmlspecialchars($_POST["cin"]);
+						$personne=htmlspecialchars($_POST["personne"]);
+						$Departement=htmlspecialchars($_POST["Departement"]);
+						$objet=htmlspecialchars($_POST["objet"]);
+						date_default_timezone_set('America/Los_Angeles');
+						$heure = date("H:i");
+						$user= new UserModel;
+						$user->Rvisite($cin,$Departement,$personne,$objet,$heure);
+				}
+					else {
+						echo'<script>alert("Vous devez remplir tou les camps");</script>';
+					}
+				}
+
+			}
 		}

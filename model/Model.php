@@ -111,8 +111,10 @@ function RecordVisitor($id_visiteur,$nom,$prenom,$telephone,$personne,$Departeme
 					<th scope="col">CIN/NIF</th>
 					<th scope="col">Nom</th>
 					<th scope="col">Prénom</th>
+					<th scope="col">Telephone</th>
 					<th scope="col">Département</th>
 					<th scope="col">Personne visitée</th>
+					<th scope="col">Objet De Visite</th>
 					<th scope="col">Date De Visite</th>
 					<th scope="col">H_ENTRÉE</th>
 					<th scope="col"></th>
@@ -123,7 +125,7 @@ function RecordVisitor($id_visiteur,$nom,$prenom,$telephone,$personne,$Departeme
 		//$vizi;
 		require("model/Connectiondb.php");
 		$connect=Connection();
-		$sql=$connect->query("SELECT V.Id_visiteur, V.Nom, V.Prenom, t.Id_visiteur, t.Departement, t.Personne_a_contacter, t.sorti,t.h_entrer,t.Date_d_entree FROM visiteur V, visite t WHERE V.Id_visiteur=t.Id_visiteur AND t.sorti=0 ");
+		$sql=$connect->query("SELECT V.Id_visiteur, V.Nom, V.Prenom, V.Tel,t.Id_visiteur, t.Departement, t.Personne_a_contacter, t.sorti,t.h_entrer,t.Date_d_entree, t.objet_visite FROM visiteur V, visite t WHERE V.Id_visiteur=t.Id_visiteur AND t.sorti=0 ");
 		while($visiteur=$sql->fetch())
 		{
 			$vizi=$visiteur["Id_visiteur"];
@@ -134,8 +136,10 @@ function RecordVisitor($id_visiteur,$nom,$prenom,$telephone,$personne,$Departeme
 							<th scope="row">'.$visiteur["Id_visiteur"].'</th>
 							<td>'.$visiteur["Nom"].'</td>
 							<td>'.$visiteur["Prenom"].'</td>
+							<td>'.$visiteur["Tel"].'</td>
 							<td>'.$visiteur["Departement"].'</td>
 							<td>'.$visiteur["Personne_a_contacter"].'</td>
+							<td>'.$visiteur["objet_visite"].'</td>
 							<td>'.$visiteur["Date_d_entree"].'</td>
 							<td>'.$visiteur["h_entrer"].'</td>';
 				if($_SESSION["Statut"]=="0")
@@ -199,7 +203,12 @@ function RecordVisitor($id_visiteur,$nom,$prenom,$telephone,$personne,$Departeme
 									<td>'.$visiteur["Date_d_entree"].'</td>
 									<td>'.$visiteur["h_entrer"].'</td>
 									<td>'.$visiteur["h_sortie"].'</td>
-									<td><a href="index.php?visite" class="btn2">Visite</a></td>
+									<td>
+										<form method="post" action="index.php?enVisit">
+											<SELECT type="hidden" name="vizit" style="display: none;"><option  value="'.$visiteur["Id_visiteur"].'"</SELECT>
+											<input type="submit" name="sorti" value="Enregistrement de Visite" class="btn2">
+										</form
+									</td>
 								</tr>
 							</tbody>
 
@@ -264,8 +273,13 @@ function chekRapport($jour,$Mois,$Annee,$Departement)
 
 			if($Annee!="none" AND $Mois=="none" AND $jour=="none")
 			{
-				echo $Annee ."<br/>";
-				$l=$connect->query("SELECT R.Id_visiteur,R.Nom,R.Prenom,R.Tel,d.Id_visiteur,d.Date_d_entree,d.h_entrer,d.h_sortie,d.Departement,d.Personne_a_contacter,d.objet_visite  FROM Visite d ,visiteur R WHERE R.Id_visiteur=d.Id_visiteur AND YEAR(Date_d_entree)='$Annee' AND d.Departement='$Departement'");
+				if($Departement!=NULL)
+				{
+						$l=$connect->query("SELECT R.Id_visiteur,R.Nom,R.Prenom,R.Tel,d.Id_visiteur,d.Date_d_entree,d.h_entrer,d.h_sortie,d.Departement,d.Personne_a_contacter,d.objet_visite  FROM Visite d ,visiteur R WHERE R.Id_visiteur=d.Id_visiteur AND YEAR(Date_d_entree)='$Annee' AND d.Departement='$Departement'");
+				}
+				else{
+						$l=$connect->query("SELECT R.Id_visiteur,R.Nom,R.Prenom,R.Tel,d.Id_visiteur,d.Date_d_entree,d.h_entrer,d.h_sortie,d.Departement,d.Personne_a_contacter,d.objet_visite  FROM Visite d ,visiteur R WHERE R.Id_visiteur=d.Id_visiteur AND YEAR(Date_d_entree)='$Annee' ");
+				}
 					while ($visiteur=$l->fetch()) {
 						if(isset($visiteur["Id_visiteur"]))
 						{
@@ -289,8 +303,13 @@ function chekRapport($jour,$Mois,$Annee,$Departement)
 			}
 			if($Annee!="none" AND $Mois!="none" AND $jour=="none")
 			{
-
-				$l=$connect->query("SELECT R.Id_visiteur,R.Nom,R.Prenom,R.Tel,d.Id_visiteur,d.Date_d_entree,d.h_entrer,d.h_sortie,d.Departement,d.Personne_a_contacter,d.objet_visite  FROM Visite d ,visiteur R WHERE R.Id_visiteur=d.Id_visiteur AND YEAR(Date_d_entree)='$Annee' AND MONTH(Date_d_entree)='$Mois' AND d.Departement='$Departement'");
+				if($Departement!="none")
+				{
+					$l=$connect->query("SELECT R.Id_visiteur,R.Nom,R.Prenom,R.Tel,d.Id_visiteur,d.Date_d_entree,d.h_entrer,d.h_sortie,d.Departement,d.Personne_a_contacter,d.objet_visite  FROM Visite d ,visiteur R WHERE R.Id_visiteur=d.Id_visiteur AND YEAR(Date_d_entree)='$Annee' AND MONTH(Date_d_entree)='$Mois' AND d.Departement='$Departement'");
+				}
+				else {
+					$l=$connect->query("SELECT R.Id_visiteur,R.Nom,R.Prenom,R.Tel,d.Id_visiteur,d.Date_d_entree,d.h_entrer,d.h_sortie,d.Departement,d.Personne_a_contacter,d.objet_visite  FROM Visite d ,visiteur R WHERE R.Id_visiteur=d.Id_visiteur AND YEAR(Date_d_entree)='$Annee' AND MONTH(Date_d_entree)='$Mois' ");
+				}
 					while ($visiteur=$l->fetch()) {
 						if(isset($visiteur["Id_visiteur"]))
 						{
@@ -314,8 +333,13 @@ function chekRapport($jour,$Mois,$Annee,$Departement)
 			}
 			if($Annee!="none" AND $Mois!="none" AND $jour!="none")
 			{
-				echo $Annee ."<br/>";
-				$l=$connect->query("SELECT R.Id_visiteur,R.Nom,R.Prenom,R.Tel,d.Id_visiteur,d.Date_d_entree,d.h_entrer,d.h_sortie,d.Departement,d.Personne_a_contacter,d.objet_visite  FROM Visite d ,visiteur R WHERE R.Id_visiteur=d.Id_visiteur AND YEAR(Date_d_entree)='$Annee' AND MONTH(Date_d_entree)='$Mois' AND DAY(Date_d_entree)='$jour' AND d.Departement='$Departement'");
+				if($Departement!="none")
+				{
+					$l=$connect->query("SELECT R.Id_visiteur,R.Nom,R.Prenom,R.Tel,d.Id_visiteur,d.Date_d_entree,d.h_entrer,d.h_sortie,d.Departement,d.Personne_a_contacter,d.objet_visite  FROM Visite d ,visiteur R WHERE R.Id_visiteur=d.Id_visiteur AND YEAR(Date_d_entree)='$Annee' AND MONTH(Date_d_entree)='$Mois' AND DAY(Date_d_entree)='$jour' AND d.Departement='$Departement'");
+				}
+				else {
+					$l=$connect->query("SELECT R.Id_visiteur,R.Nom,R.Prenom,R.Tel,d.Id_visiteur,d.Date_d_entree,d.h_entrer,d.h_sortie,d.Departement,d.Personne_a_contacter,d.objet_visite  FROM Visite d ,visiteur R WHERE R.Id_visiteur=d.Id_visiteur AND YEAR(Date_d_entree)='$Annee' AND MONTH(Date_d_entree)='$Mois' AND DAY(Date_d_entree)='$jour'");
+				}
 					while ($visiteur=$l->fetch()) {
 						if(isset($visiteur["Id_visiteur"]))
 						{
@@ -556,6 +580,28 @@ function adminRapport ($jour,$Mois,$Annee,$Departement)
 
 				}
 
+		}
+		function Rvisite($cin,$Departement,$personne,$objet,$heure)
+		{
+			if(isset($cin))
+			{
+				if($cin!=NULL)
+				{
+					require("Connectiondb.php");
+					$con=Connection();
+					$mv= new UserModel;
+					$vri=$mv->chekVizitor($cin,$con);
+					if($vri==1)
+					{
+						$user=$_SESSION["Id_utilisateur"];
+							$sql=$con->query("INSERT INTO `visite`(`Id_visiteur`, `Id_User`, `Departement`, `Personne_a_contacter`, `h_entrer`, `objet_visite`) VALUES ('$cin','$user','$Departement','$personne','$heure','$objet')");
+							echo '<script> alert ("Visiteur Enregistrer!")</script>';
+					}
+					else{
+						echo'<script>alert("Ce Visiteur n\'a pas été enregistré dans le systeme");</script>';
+					}
+				}
+			}
 		}
 
 	}

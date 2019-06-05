@@ -34,7 +34,7 @@
 				if(isset($_SESSION["Statut"]))
 				{
 					echo "Bonjour ".$_SESSION["Nom"]." ".$_SESSION["Prenom"];
-					if($_SESSION["Statut"]=="0" and !isset($_GET["enregistrement"]) AND !isset($_GET["verification"]) AND !isset($_GET["recherche"]) and !isset($_GET["rapport"]))
+					if($_SESSION["Statut"]=="0" and !isset($_GET["enregistrement"]) AND !isset($_GET["verification"]) AND !isset($_GET["recherche"]) and !isset($_GET["rapport"]) and !isset($_GET["enVisit"]))
 					{
 						require("view/AgentMenu.php");
 					}
@@ -109,6 +109,12 @@
 						echo '<p id="menu"><a href="index.php"><img src="view/image/menu.png"><br/>MENU PRINCIPAL</a></p>';
 						$controler = new ControlerUser;
 						$controler->conchekRapport();
+					}
+					if(isset($_GET["enVisit"]))
+					{
+						echo '<p id="menu"><a href="index.php"><img src="view/image/menu.png"><br/>MENU PRINCIPAL</a></p>';
+						$controler = new ControlerUser;
+						$controler->ConRvisite();
 					}
 				}
 				if($_SESSION["Statut"]==2)
