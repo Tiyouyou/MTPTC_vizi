@@ -125,7 +125,7 @@ function RecordVisitor($id_visiteur,$nom,$prenom,$telephone,$personne,$Departeme
 		//$vizi;
 		require("model/Connectiondb.php");
 		$connect=Connection();
-		$sql=$connect->query("SELECT V.Id_visiteur, V.Nom, V.Prenom, V.Tel,t.Id_visiteur, t.Departement, t.Personne_a_contacter, t.sorti,t.h_entrer,t.Date_d_entree, t.objet_visite FROM visiteur V, visite t WHERE V.Id_visiteur=t.Id_visiteur AND t.sorti=0 ");
+		$sql=$connect->query("SELECT V.Id_visiteur, V.Nom, V.Prenom, V.Tel,t.Id_visiteur,t.Id_visite, t.Departement, t.Personne_a_contacter, t.sorti,t.h_entrer,t.Date_d_entree, t.objet_visite FROM visiteur V, visite t WHERE V.Id_visiteur=t.Id_visiteur AND t.sorti=0 ");
 		while($visiteur=$sql->fetch())
 		{
 			$vizi=$visiteur["Id_visiteur"];
@@ -273,7 +273,7 @@ function chekRapport($jour,$Mois,$Annee,$Departement)
 
 			if($Annee!="none" AND $Mois=="none" AND $jour=="none")
 			{
-				if($Departement!=NULL)
+				if($Departement!="none")
 				{
 						$l=$connect->query("SELECT R.Id_visiteur,R.Nom,R.Prenom,R.Tel,d.Id_visiteur,d.Date_d_entree,d.h_entrer,d.h_sortie,d.Departement,d.Personne_a_contacter,d.objet_visite  FROM Visite d ,visiteur R WHERE R.Id_visiteur=d.Id_visiteur AND YEAR(Date_d_entree)='$Annee' AND d.Departement='$Departement'");
 				}
@@ -361,7 +361,8 @@ function chekRapport($jour,$Mois,$Annee,$Departement)
 					}
 
 			}
-			echo 	"	</table>";
+
+			echo 	"</table>";
 		}
 
 	}
@@ -468,7 +469,7 @@ function adminRapport ($jour,$Mois,$Annee,$Departement)
 				}
 
 		}
-		echo 	"	</table>";
+		echo 	'</table>;
 	}
 
 }
