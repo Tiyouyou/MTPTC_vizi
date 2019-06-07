@@ -469,7 +469,7 @@ function adminRapport ($jour,$Mois,$Annee,$Departement)
 				}
 
 		}
-		echo 	'</table>;
+		echo 	"	</table>";
 	}
 
 }
