@@ -89,7 +89,7 @@
 								$telephone=htmlspecialchars($_POST["telephone"]);
 								$personne=htmlspecialchars($_POST["personne"]);
 								$Departement=htmlspecialchars($_POST["Departement"]);
-								$objet=htmlspecialchars($_POST["objet"]);
+								$objet=htmlspecialchars(addslashes($_POST["objet"]));
 						  	$user->RecordVisitor($CIN,$nom,$prenom,$telephone,$personne,$Departement,$objet);
 
 						}
@@ -137,7 +137,7 @@
 					$jour=htmlspecialchars($_POST["Jour"]);
 					$mois=htmlspecialchars($_POST["Mois"]);
 					$annee=htmlspecialchars($_POST["Annee"]);
-					$user->chekRapport($jour,$mois,$annee,$Departement);
+					$user->adminRapport ($jour,$mois,$annee,$Departement);
 				}
 			}
 			function conseach()
@@ -170,7 +170,7 @@
 						$cin=htmlspecialchars($_POST["cin"]);
 						$personne=htmlspecialchars($_POST["personne"]);
 						$Departement=htmlspecialchars($_POST["Departement"]);
-						$objet=htmlspecialchars($_POST["objet"]);
+						$objet=htmlspecialchars(addslashes($_POST["objet"]));
 						date_default_timezone_set('America/Los_Angeles');
 						$heure = date("H:i");
 						$user= new UserModel;

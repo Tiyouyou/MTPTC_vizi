@@ -13,7 +13,7 @@
 			$connect=Connection();
 			if($user!=NULL and $password!=NULL)
 			{
-				$l=$connect->query("SELECT * FROM `utlisateur` WHERE Nom_utilisateur='$user' AND Password='$password'");
+				$l=$connect->query("SELECT * FROM `utlisateur` WHERE Nom_utilisateur='$user' AND Password='$password' AND Active=0");
 				while ($user=$l->fetch()) {
 					$_SESSION["Nom_utilisateur"]=$user["Nom_utilisateur"];
 					$_SESSION["Password"]=$user["Password"];
@@ -393,8 +393,13 @@ function adminRapport ($jour,$Mois,$Annee,$Departement)
 
 		if($Annee!="none" AND $Mois=="none" AND $jour=="none")
 		{
-			echo $Annee ."<br/>";
-			$l=$connect->query("SELECT U.id_utilisateur,d.Id_User,R.Id_visiteur,R.Nom,R.Prenom,R.Tel,d.Id_visiteur,d.Date_d_entree,d.h_entrer,d.h_sortie,d.Departement,d.Personne_a_contacter,d.objet_visite  FROM Visite d ,visiteur R,utlisateur U WHERE R.Id_visiteur=d.Id_visiteur AND U.id_utilisateur=d.Id_User AND YEAR(Date_d_entree)='$Annee' AND d.Departement='$Departement'");
+			if($Departement!="none")
+			{
+					$l=$connect->query("SELECT R.Id_visiteur,R.Nom,R.Prenom,R.Tel,d.Id_visiteur,d.Date_d_entree,d.h_entrer,d.h_sortie,d.Departement,d.Personne_a_contacter,d.objet_visite,d.Id_User  FROM Visite d ,visiteur R WHERE R.Id_visiteur=d.Id_visiteur AND YEAR(Date_d_entree)='$Annee' AND d.Departement='$Departement'");
+			}
+			else{
+					$l=$connect->query("SELECT R.Id_visiteur,R.Nom,R.Prenom,R.Tel,d.Id_visiteur,d.Date_d_entree,d.h_entrer,d.h_sortie,d.Departement,d.Personne_a_contacter,d.objet_visite,d.Id_User  FROM Visite d ,visiteur R WHERE R.Id_visiteur=d.Id_visiteur AND YEAR(Date_d_entree)='$Annee' ");
+			}
 				while ($visiteur=$l->fetch()) {
 					if(isset($visiteur["Id_visiteur"]))
 					{
@@ -419,8 +424,13 @@ function adminRapport ($jour,$Mois,$Annee,$Departement)
 		}
 		if($Annee!="none" AND $Mois!="none" AND $jour=="none")
 		{
-
-			$l=$connect->query("SELECT U.id_utilisateur,d.Id_User,R.Id_visiteur,R.Nom,R.Prenom,R.Tel,d.Id_visiteur,d.Date_d_entree,d.h_entrer,d.h_sortie,d.Departement,d.Personne_a_contacter,d.objet_visite  FROM Visite d ,visiteur R,utlisateur U WHERE R.Id_visiteur=d.Id_visiteur AND U.id_utilisateur=d.Id_User AND YEAR(Date_d_entree)='$Annee' AND MONTH(Date_d_entree)='$Mois' AND d.Departement='$Departement'");
+			if($Departement!="none")
+			{
+				$l=$connect->query("SELECT R.Id_visiteur,R.Nom,R.Prenom,R.Tel,d.Id_visiteur,d.Date_d_entree,d.h_entrer,d.h_sortie,d.Departement,d.Personne_a_contacter,d.objet_visite,d.Id_User  FROM Visite d ,visiteur R WHERE R.Id_visiteur=d.Id_visiteur AND YEAR(Date_d_entree)='$Annee' AND MONTH(Date_d_entree)='$Mois' AND d.Departement='$Departement'");
+			}
+			else {
+				$l=$connect->query("SELECT R.Id_visiteur,R.Nom,R.Prenom,R.Tel,d.Id_visiteur,d.Date_d_entree,d.h_entrer,d.h_sortie,d.Departement,d.Personne_a_contacter,d.objet_visite,d.Id_User  FROM Visite d ,visiteur R WHERE R.Id_visiteur=d.Id_visiteur AND YEAR(Date_d_entree)='$Annee' AND MONTH(Date_d_entree)='$Mois' ");
+			}
 				while ($visiteur=$l->fetch()) {
 					if(isset($visiteur["Id_visiteur"]))
 					{
@@ -445,8 +455,13 @@ function adminRapport ($jour,$Mois,$Annee,$Departement)
 		}
 		if($Annee!="none" AND $Mois!="none" AND $jour!="none")
 		{
-			echo $Annee ."<br/>";
-			$l=$connect->query("SELECT U.id_utilisateur,d.Id_User,R.Id_visiteur,R.Nom,R.Prenom,R.Tel,d.Id_visiteur,d.Date_d_entree,d.h_entrer,d.h_sortie,d.Departement,d.Personne_a_contacter,d.objet_visite  FROM Visite d ,visiteur R,utlisateur U WHERE R.Id_visiteur=d.Id_visiteur AND U.id_utilisateur=d.Id_User AND YEAR(Date_d_entree)='$Annee' AND MONTH(Date_d_entree)='$Mois' AND DAY(Date_d_entree)='$jour' AND d.Departement='$Departement' ");
+			if($Departement!="none")
+			{
+				$l=$connect->query("SELECT R.Id_visiteur,R.Nom,R.Prenom,R.Tel,d.Id_visiteur,d.Date_d_entree,d.h_entrer,d.h_sortie,d.Departement,d.Personne_a_contacter,d.objet_visite,d.Id_User  FROM Visite d ,visiteur R WHERE R.Id_visiteur=d.Id_visiteur AND YEAR(Date_d_entree)='$Annee' AND MONTH(Date_d_entree)='$Mois' AND DAY(Date_d_entree)='$jour' AND d.Departement='$Departement'");
+			}
+			else {
+				$l=$connect->query("SELECT R.Id_visiteur,R.Nom,R.Prenom,R.Tel,d.Id_visiteur,d.Date_d_entree,d.h_entrer,d.h_sortie,d.Departement,d.Personne_a_contacter,d.objet_visite,d.Id_User  FROM Visite d ,visiteur R WHERE R.Id_visiteur=d.Id_visiteur AND YEAR(Date_d_entree)='$Annee' AND MONTH(Date_d_entree)='$Mois' AND DAY(Date_d_entree)='$jour'");
+			}
 				while ($visiteur=$l->fetch()) {
 					if(isset($visiteur["Id_visiteur"]))
 					{
@@ -469,7 +484,8 @@ function adminRapport ($jour,$Mois,$Annee,$Departement)
 				}
 
 		}
-		echo 	"	</table>";
+
+		echo 	"</table>";
 	}
 
 }
@@ -516,16 +532,14 @@ function adminRapport ($jour,$Mois,$Annee,$Departement)
 						if($Utilisateur["Active"]==0)
 						{
 							echo'<td><form method="post" action="model/Activation.php">
-										<SELECT type="hidden" name="val" style="display: none;"><option  value="'.$Utilisateur["Id_utilisateur"].'"></option>"
-										<option  value="'.$Utilisateur["Active"].'></option>"</SELECT>
-										<input type="submit" name="desactive" value="DESACTIVER">
+										<SELECT type="hidden" name="val" style="display: none;"><option  value="'.$Utilisateur["Id_utilisateur"].'"></option></SELECT>
+										<input type="submit" name="desactive" value="Desactiver">
 										</form></td>';
 						}
 						if($Utilisateur["Active"]==1)
 						{
 							echo'<td><form method="post" action="model/Activation.php">
-										<SELECT type="hidden" name="val" style="display: none;"><option  value="'.$Utilisateur["Id_utilisateur"].'"></option>"
-										<option  value="'.$Utilisateur["Active"].'></option>"</SELECT>
+										<SELECT type="hidden" name="val" style="display: none;"><option  value="'.$Utilisateur["Id_utilisateur"].'"></option></SELECT>
 										<input type="submit" name="active" value="Activer">
 										</form></td>';
 						}
